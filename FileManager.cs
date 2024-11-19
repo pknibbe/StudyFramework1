@@ -22,11 +22,11 @@ namespace StudyFramework1
 
         private Collection<string> subjectsFromXML()
         {
-            return new Collection<string>();
+            return [];
         }
 
         private void writeFile(string filePath, string content)
-        { 
+        {
             fPath = String.IsNullOrEmpty(filePath) ? defaultFilePath : filePath;
             File.WriteAllText(fPath, content);
         }

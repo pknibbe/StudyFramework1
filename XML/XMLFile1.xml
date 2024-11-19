@@ -3,77 +3,114 @@
   <subject>
     <subjectName>CompTIA A+ 1101</subjectName>
     <Topics>
-      <topicName>Mobile Devices</topicName>
-      <subTopics>
-        <subTopicName>Laptop component installation</subTopicName>
-        <questions>
-          <question>What types of batteries do laptop computers use?</question>
-          <answer>NiCad or NiMH or Lithium Ion (best and prevalent today)</answer>
-          <question>What types of RAM do laptop computers use?</question>
-          <answer>Dual Data Rate Synchronized Dynamic Random Access Memory</answer>
-          <question>What types of DDR do laptop computers use?</question>
-          <answer>DDR3 or DDR4 or DDR5</answer>
-          <question>What is a dual channel DDR?</question>
-          <answer>Dual channel DDRs get double speed by pairing up. They must be installed in pairs.</answer>
-          <question>Tell me about DDR3</question>
-          <answer>DDR3 has an 8-bit buffer allowing it to run at twice system clock speed. It has either 240 or 204 pins (so).</answer>
-          <question>Tell me about DDR4</question>
-          <answer>DDR4 can run at eight times system clock speed. It has either 288 or 260 pins (so).</answer>
-          <question>Tell me about DDR5</question>
-          <answer>DDR5 can also run at eight times system clock speed. It has either 288 or 262 pins (s0).</answer>
-        </questions>
-        <subTopicName>Mobile Displays</subTopicName>
-        <questions>
-          <question>What types of displays do laptop computers use?</question>
-          <answer>IPS or TN or VA or OLED</answer>
-          <question>What are the strengths and weaknesses of IPS displays?</question>
-          <answer>In-Plane Switching displays are inexpensive and have great color but are slow.</answer>
-          <question>What are the strengths and weaknesses of TN displays?</question>
-          <answer>Twisted Nematic displays are fast, but don't show well off axis.</answer>
-          <question>What are the strengths and weaknesses of VA displays?</question>
-          <answer>Vertical Alignment displays are medium speed and color and price.</answer>
-          <question>What are the strengths and weaknesses of OLED displays?</question>
-          <answer>Organic Light-Emitting Diode displays are thin, don't require a backlight, and expensive.</answer>
-        </questions>
-        <subTopicName>Accessories and Ports</subTopicName>
-        <questions>
+      <topic>
+        <topicName>Mobile Devices</topicName>
+        <subTopics>
+          <subtopic>         
+            <subTopicName>Laptop component installation</subTopicName>
+            <questions>
+              <qaPair>
+                <question>What types of batteries do laptop computers use?</question>
+                <answer>NiCad or NiMH or Lithium Ion (best and prevalent today)</answer>
+              </qaPair>
+              <qaPair>
+                <question>What types of RAM do laptop computers use?</question>
+                <answer>Dual Data Rate Synchronized Dynamic Random Access Memory</answer>
+              </qaPair>
+              <qaPair>
+                <question>What types of DDR do laptop computers use?</question>
+                <answer>DDR3 or DDR4 or DDR5</answer>
+              </qaPair>
+              <qaPair>
+                <question>What is a dual channel DDR?</question>
+                <answer>Dual channel DDRs get double speed by pairing up. They must be installed in pairs.</answer>
+              </qaPair>
+              <qaPair>
+                <question>Tell me about DDR3</question>
+                <answer>DDR3 has an 8-bit buffer allowing it to run at twice system clock speed. It has either 240 or 204 pins (so).</answer>
+              </qaPair>
+              <qaPair>
+                <question>Tell me about DDR4</question>
+                <answer>DDR4 can run at eight times system clock speed. It has either 288 or 260 pins (so).</answer>
+              </qaPair>
+              <qaPair>
+                <question>Tell me about DDR5</question>
+                <answer>DDR5 can also run at eight times system clock speed. It has either 288 or 262 pins (s0).</answer>
+              </qaPair>
+            </questions>
+         </subtopic>
+          <subtopic>
+            <subTopicName>Mobile Displays</subTopicName>
+            <questions>
+              <qaPair>
+                <question>What types of displays do laptop computers use?</question>
+                <answer>IPS or TN or VA or OLED</answer>
+              </qaPair>
+              <qaPair>
+                 <question>What are the strengths and weaknesses of IPS displays?</question>
+                 <answer>In-Plane Switching displays are inexpensive and have great color but are slow.</answer>
+              </qaPair>
+               <qaPair>
+                 <question>What are the strengths and weaknesses of TN displays?</question>
+                 <answer>Twisted Nematic displays are fast, but don't show well off axis.</answer>
+              </qaPair>
+               <qaPair>
+                 <question>What are the strengths and weaknesses of VA displays?</question>
+                 <answer>Vertical Alignment displays are medium speed and color and price.</answer>
+               </qaPair>
+                <qaPair>
+                  <question>What are the strengths and weaknesses of OLED displays?</question>
+                  <answer>Organic Light-Emitting Diode displays are thin, don't require a backlight, and expensive.</answer>
+               </qaPair>
+             </questions>
+          </subtopic>
+          <subtopic>
+            <subTopicName>Accessories and Ports</subTopicName>
+            <questions>
 
-        </questions>
+            </questions>
+          </subtopic>
         <subTopicName>Configure connectivity</subTopicName>
         <questions>
 
         </questions>
       </subTopics>
-    </Topics>
-    <Topics>
-      <topicName>Networks</topicName>
-      <subTopics>
-        <subTopicName></subTopicName>
-      </subTopics>
-    </Topics>
-    <Topics>
-      <topicName>Hardware</topicName>
-      <subTopics>
-        <subTopicName></subTopicName>
-      </subTopics>
-    </Topics>
-    <Topics>
-      <topicName>Virtualization and Cloud Computing</topicName>
-      <subTopics>
-        <subTopicName></subTopicName>
-      </subTopics>
-    </Topics>
-    <Topics>
-      <topicName>Troubleshooting</topicName>
-      <subTopics>
-        <subTopicName></subTopicName>
-      </subTopics>
+      </topic>
+      <topic>
+        <topicName>Networks</topicName>
+        <subTopics>
+          <subTopicName></subTopicName>
+        </subTopics>
+      </topic>
+      <topic>
+        <topicName>Hardware</topicName>
+        <subTopics>
+          <subTopicName></subTopicName>
+        </subTopics>
+      </topic>
+      <topic>
+        <topicName>Virtualization and Cloud Computing</topicName>
+        <subTopics>
+          <subTopicName></subTopicName>
+        </subTopics>
+      </topic>
+      <topic>
+        <topicName>Troubleshooting</topicName>
+        <subTopics>
+          <subTopicName></subTopicName>
+        </subTopics>
+      </topic>
     </Topics>
   </subject>
   <subject>
     <subjectName>CompTIA A+ 1102</subjectName>
-    <subTopics>
+    <Topics>
+      <topic>
+        <topicName></topicName>
+         <subTopics>
 
-    </subTopics>
+          </subTopics>
+        </topic>
+    </Topics>
   </subject>
 </subjects>

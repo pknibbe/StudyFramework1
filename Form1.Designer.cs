@@ -37,25 +37,25 @@
             comboBoxSubTopic = new ComboBox();
             label5 = new Label();
             panel8 = new Panel();
-            textBox3 = new TextBox();
-            button5 = new Button();
+            textBoxSubTopic = new TextBox();
+            buttonAddSubTopic = new Button();
             label6 = new Label();
             panel9 = new Panel();
-            button6 = new Button();
+            buttonDeleteSubTopic = new Button();
             tableLayoutPanel3 = new TableLayoutPanel();
             panel4 = new Panel();
             comboBoxTopic = new ComboBox();
             label3 = new Label();
             panel5 = new Panel();
-            textBox2 = new TextBox();
-            button3 = new Button();
+            textBoxTopic = new TextBox();
+            buttonAddTopic = new Button();
             label4 = new Label();
             panel6 = new Panel();
-            button4 = new Button();
+            buttonDeleteTopic = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
             panel1 = new Panel();
             panel2 = new Panel();
-            textBox1 = new TextBox();
+            textBoxSubject = new TextBox();
             label2 = new Label();
             panel3 = new Panel();
             buttonDeleteSubject = new Button();
@@ -67,6 +67,7 @@
             labelAnswer = new Label();
             buttonShowAnswer = new Button();
             labelQuestion = new Label();
+            buttonUpdateXml = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             panel7.SuspendLayout();
@@ -99,7 +100,7 @@
             comboBoxSubject.Name = "comboBoxSubject";
             comboBoxSubject.Size = new Size(184, 23);
             comboBoxSubject.TabIndex = 1;
-            comboBoxSubject.SelectedIndexChanged += comboBoxSubject_SelectedIndexChanged;
+            comboBoxSubject.SelectedIndexChanged += ComboBoxSubject_SelectedIndexChanged;
             // 
             // buttonAddSubject
             // 
@@ -110,7 +111,7 @@
             buttonAddSubject.TabIndex = 2;
             buttonAddSubject.Text = "Add Subject";
             buttonAddSubject.UseVisualStyleBackColor = true;
-            buttonAddSubject.Click += buttonAddSubject_Click;
+            buttonAddSubject.Click += ButtonAddSubject_Click;
             // 
             // tableLayoutPanel1
             // 
@@ -168,6 +169,7 @@
             comboBoxSubTopic.Name = "comboBoxSubTopic";
             comboBoxSubTopic.Size = new Size(184, 23);
             comboBoxSubTopic.TabIndex = 1;
+            comboBoxSubTopic.SelectedIndexChanged += ComboBoxSubTopic_SelectedIndexChanged;
             // 
             // label5
             // 
@@ -180,30 +182,31 @@
             // 
             // panel8
             // 
-            panel8.Controls.Add(textBox3);
-            panel8.Controls.Add(button5);
+            panel8.Controls.Add(textBoxSubTopic);
+            panel8.Controls.Add(buttonAddSubTopic);
             panel8.Dock = DockStyle.Fill;
             panel8.Location = new Point(252, 26);
             panel8.Name = "panel8";
             panel8.Size = new Size(378, 66);
             panel8.TabIndex = 1;
             // 
-            // textBox3
+            // textBoxSubTopic
             // 
-            textBox3.Location = new Point(12, 32);
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(255, 23);
-            textBox3.TabIndex = 3;
+            textBoxSubTopic.Location = new Point(12, 32);
+            textBoxSubTopic.Name = "textBoxSubTopic";
+            textBoxSubTopic.Size = new Size(255, 23);
+            textBoxSubTopic.TabIndex = 3;
             // 
-            // button5
+            // buttonAddSubTopic
             // 
-            button5.Anchor = AnchorStyles.Right;
-            button5.Location = new Point(450, -3);
-            button5.Name = "button5";
-            button5.Size = new Size(74, 45);
-            button5.TabIndex = 2;
-            button5.Text = "Add Topic";
-            button5.UseVisualStyleBackColor = true;
+            buttonAddSubTopic.Anchor = AnchorStyles.Right;
+            buttonAddSubTopic.Location = new Point(300, 10);
+            buttonAddSubTopic.Name = "buttonAddSubTopic";
+            buttonAddSubTopic.Size = new Size(74, 45);
+            buttonAddSubTopic.TabIndex = 2;
+            buttonAddSubTopic.Text = "Add SubTopic";
+            buttonAddSubTopic.UseVisualStyleBackColor = true;
+            buttonAddSubTopic.Click += ButtonAddSubTopic_Click;
             // 
             // label6
             // 
@@ -217,21 +220,22 @@
             // 
             // panel9
             // 
-            panel9.Controls.Add(button6);
+            panel9.Controls.Add(buttonDeleteSubTopic);
             panel9.Dock = DockStyle.Fill;
             panel9.Location = new Point(636, 26);
             panel9.Name = "panel9";
             panel9.Size = new Size(106, 66);
             panel9.TabIndex = 3;
             // 
-            // button6
+            // buttonDeleteSubTopic
             // 
-            button6.Location = new Point(10, 6);
-            button6.Name = "button6";
-            button6.Size = new Size(84, 56);
-            button6.TabIndex = 4;
-            button6.Text = "Delete Current Subtopic";
-            button6.UseVisualStyleBackColor = true;
+            buttonDeleteSubTopic.Location = new Point(10, 6);
+            buttonDeleteSubTopic.Name = "buttonDeleteSubTopic";
+            buttonDeleteSubTopic.Size = new Size(84, 56);
+            buttonDeleteSubTopic.TabIndex = 4;
+            buttonDeleteSubTopic.Text = "Delete Current Subtopic";
+            buttonDeleteSubTopic.UseVisualStyleBackColor = true;
+            buttonDeleteSubTopic.Click += ButtonDeleteSubTopic_Click;
             // 
             // tableLayoutPanel3
             // 
@@ -270,6 +274,7 @@
             comboBoxTopic.Name = "comboBoxTopic";
             comboBoxTopic.Size = new Size(184, 23);
             comboBoxTopic.TabIndex = 1;
+            comboBoxTopic.SelectedIndexChanged += ComboBoxTopic_SelectedIndexChanged;
             // 
             // label3
             // 
@@ -282,30 +287,31 @@
             // 
             // panel5
             // 
-            panel5.Controls.Add(textBox2);
-            panel5.Controls.Add(button3);
+            panel5.Controls.Add(textBoxTopic);
+            panel5.Controls.Add(buttonAddTopic);
             panel5.Dock = DockStyle.Fill;
             panel5.Location = new Point(252, 27);
             panel5.Name = "panel5";
             panel5.Size = new Size(378, 67);
             panel5.TabIndex = 1;
             // 
-            // textBox2
+            // textBoxTopic
             // 
-            textBox2.Location = new Point(12, 32);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(255, 23);
-            textBox2.TabIndex = 3;
+            textBoxTopic.Location = new Point(12, 32);
+            textBoxTopic.Name = "textBoxTopic";
+            textBoxTopic.Size = new Size(255, 23);
+            textBoxTopic.TabIndex = 3;
             // 
-            // button3
+            // buttonAddTopic
             // 
-            button3.Anchor = AnchorStyles.Right;
-            button3.Location = new Point(300, 7);
-            button3.Name = "button3";
-            button3.Size = new Size(74, 45);
-            button3.TabIndex = 2;
-            button3.Text = "Add Topic";
-            button3.UseVisualStyleBackColor = true;
+            buttonAddTopic.Anchor = AnchorStyles.Right;
+            buttonAddTopic.Location = new Point(300, 7);
+            buttonAddTopic.Name = "buttonAddTopic";
+            buttonAddTopic.Size = new Size(74, 45);
+            buttonAddTopic.TabIndex = 2;
+            buttonAddTopic.Text = "Add Topic";
+            buttonAddTopic.UseVisualStyleBackColor = true;
+            buttonAddTopic.Click += ButtonAddTopic_Click;
             // 
             // label4
             // 
@@ -319,21 +325,22 @@
             // 
             // panel6
             // 
-            panel6.Controls.Add(button4);
+            panel6.Controls.Add(buttonDeleteTopic);
             panel6.Dock = DockStyle.Fill;
             panel6.Location = new Point(636, 27);
             panel6.Name = "panel6";
             panel6.Size = new Size(106, 67);
             panel6.TabIndex = 3;
             // 
-            // button4
+            // buttonDeleteTopic
             // 
-            button4.Location = new Point(10, 6);
-            button4.Name = "button4";
-            button4.Size = new Size(84, 56);
-            button4.TabIndex = 4;
-            button4.Text = "Delete Current Topic";
-            button4.UseVisualStyleBackColor = true;
+            buttonDeleteTopic.Location = new Point(10, 6);
+            buttonDeleteTopic.Name = "buttonDeleteTopic";
+            buttonDeleteTopic.Size = new Size(84, 56);
+            buttonDeleteTopic.TabIndex = 4;
+            buttonDeleteTopic.Text = "Delete Current Topic";
+            buttonDeleteTopic.UseVisualStyleBackColor = true;
+            buttonDeleteTopic.Click += ButtonDeleteTopic_Click;
             // 
             // tableLayoutPanel2
             // 
@@ -367,7 +374,7 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(textBox1);
+            panel2.Controls.Add(textBoxSubject);
             panel2.Controls.Add(buttonAddSubject);
             panel2.Dock = DockStyle.Fill;
             panel2.Location = new Point(252, 27);
@@ -375,12 +382,12 @@
             panel2.Size = new Size(378, 66);
             panel2.TabIndex = 1;
             // 
-            // textBox1
+            // textBoxSubject
             // 
-            textBox1.Location = new Point(12, 32);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(255, 23);
-            textBox1.TabIndex = 3;
+            textBoxSubject.Location = new Point(12, 32);
+            textBoxSubject.Name = "textBoxSubject";
+            textBoxSubject.Size = new Size(255, 23);
+            textBoxSubject.TabIndex = 3;
             // 
             // label2
             // 
@@ -409,10 +416,11 @@
             buttonDeleteSubject.TabIndex = 4;
             buttonDeleteSubject.Text = "Delete Current Subject";
             buttonDeleteSubject.UseVisualStyleBackColor = true;
-            buttonDeleteSubject.Click += buttonDeleteSubject_click;
+            buttonDeleteSubject.Click += ButtonDeleteSubject_click;
             // 
             // panel10
             // 
+            panel10.Controls.Add(buttonUpdateXml);
             panel10.Controls.Add(buttonClearMarks);
             panel10.Controls.Add(buttonShowWrong);
             panel10.Controls.Add(buttonMarkIncorrect);
@@ -489,6 +497,16 @@
             labelQuestion.TabIndex = 0;
             labelQuestion.Text = "Question:";
             // 
+            // buttonUpdateXml
+            // 
+            buttonUpdateXml.Location = new Point(444, 81);
+            buttonUpdateXml.Name = "buttonUpdateXml";
+            buttonUpdateXml.Size = new Size(75, 39);
+            buttonUpdateXml.TabIndex = 7;
+            buttonUpdateXml.Text = "Update Xml";
+            buttonUpdateXml.UseVisualStyleBackColor = true;
+            buttonUpdateXml.Click += ButtonUpdateXml_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -534,7 +552,7 @@
         private Panel panel1;
         private Panel panel2;
         private Label label2;
-        private TextBox textBox1;
+        private TextBox textBoxSubject;
         private Panel panel3;
         private Button buttonDeleteSubject;
         private TableLayoutPanel tableLayoutPanel3;
@@ -542,21 +560,21 @@
         private ComboBox comboBoxTopic;
         private Label label3;
         private Panel panel5;
-        private TextBox textBox2;
-        private Button button3;
+        private TextBox textBoxTopic;
+        private Button buttonAddTopic;
         private Label label4;
         private Panel panel6;
-        private Button button4;
+        private Button buttonDeleteTopic;
         private TableLayoutPanel tableLayoutPanel4;
         private Panel panel7;
         private ComboBox comboBoxSubTopic;
         private Label label5;
         private Panel panel8;
-        private TextBox textBox3;
-        private Button button5;
+        private TextBox textBoxSubTopic;
+        private Button buttonAddSubTopic;
         private Label label6;
         private Panel panel9;
-        private Button button6;
+        private Button buttonDeleteSubTopic;
         private Panel panel10;
         private Button buttonMarkIncorrect;
         private Button buttonMarkCorrect;
@@ -565,5 +583,6 @@
         private Label labelQuestion;
         private Button buttonClearMarks;
         private Button buttonShowWrong;
+        private Button buttonUpdateXml;
     }
 }
