@@ -4,6 +4,7 @@ namespace StudyFramework1
     {
         readonly XMLFunctions xMLFunctions = new();
         readonly System.Collections.ObjectModel.Collection<string> items = [];
+        readonly Dictionary<string, string> qaPairs = new Dictionary<string, string>();
 
         public Form1()
         {
@@ -51,9 +52,13 @@ namespace StudyFramework1
 
         private void ComboBoxSubTopic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach (string questions in xMLFunctions.UpdateSelectedSubtopic(comboBoxSubject.SelectedIndex))
+            xMLFunctions.UpdateSelectedSubtopic(comboBoxSubject.SelectedIndex, qaPairs);
+            foreach (KeyValuePair<string, string> pair in qaPairs)
             {
-                Console.WriteLine(questions);
+                labelQuestion.Text = pair.Key;
+                labelAnswer.Text = pair.Value;
+                labelAnswer.Visible = false;
+                return;
             }
         }
 

@@ -60,6 +60,7 @@
             panel3 = new Panel();
             buttonDeleteSubject = new Button();
             panel10 = new Panel();
+            buttonUpdateXml = new Button();
             buttonClearMarks = new Button();
             buttonShowWrong = new Button();
             buttonMarkIncorrect = new Button();
@@ -67,7 +68,9 @@
             labelAnswer = new Label();
             buttonShowAnswer = new Button();
             labelQuestion = new Label();
-            buttonUpdateXml = new Button();
+            textBoxQuestion = new TextBox();
+            buttonAddQuestion = new Button();
+            buttonQuestionRemove = new Button();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             panel7.SuspendLayout();
@@ -420,6 +423,9 @@
             // 
             // panel10
             // 
+            panel10.Controls.Add(buttonQuestionRemove);
+            panel10.Controls.Add(buttonAddQuestion);
+            panel10.Controls.Add(textBoxQuestion);
             panel10.Controls.Add(buttonUpdateXml);
             panel10.Controls.Add(buttonClearMarks);
             panel10.Controls.Add(buttonShowWrong);
@@ -433,6 +439,16 @@
             panel10.Name = "panel10";
             panel10.Size = new Size(745, 138);
             panel10.TabIndex = 3;
+            // 
+            // buttonUpdateXml
+            // 
+            buttonUpdateXml.Location = new Point(444, 81);
+            buttonUpdateXml.Name = "buttonUpdateXml";
+            buttonUpdateXml.Size = new Size(75, 39);
+            buttonUpdateXml.TabIndex = 7;
+            buttonUpdateXml.Text = "Update Xml";
+            buttonUpdateXml.UseVisualStyleBackColor = true;
+            buttonUpdateXml.Click += ButtonUpdateXml_Click;
             // 
             // buttonClearMarks
             // 
@@ -497,15 +513,31 @@
             labelQuestion.TabIndex = 0;
             labelQuestion.Text = "Question:";
             // 
-            // buttonUpdateXml
+            // textBoxQuestion
             // 
-            buttonUpdateXml.Location = new Point(444, 81);
-            buttonUpdateXml.Name = "buttonUpdateXml";
-            buttonUpdateXml.Size = new Size(75, 39);
-            buttonUpdateXml.TabIndex = 7;
-            buttonUpdateXml.Text = "Update Xml";
-            buttonUpdateXml.UseVisualStyleBackColor = true;
-            buttonUpdateXml.Click += ButtonUpdateXml_Click;
+            textBoxQuestion.Location = new Point(530, 9);
+            textBoxQuestion.Multiline = true;
+            textBoxQuestion.Name = "textBoxQuestion";
+            textBoxQuestion.Size = new Size(200, 111);
+            textBoxQuestion.TabIndex = 8;
+            // 
+            // buttonAddQuestion
+            // 
+            buttonAddQuestion.Location = new Point(356, 9);
+            buttonAddQuestion.Name = "buttonAddQuestion";
+            buttonAddQuestion.Size = new Size(75, 41);
+            buttonAddQuestion.TabIndex = 9;
+            buttonAddQuestion.Text = "Add Question";
+            buttonAddQuestion.UseVisualStyleBackColor = true;
+            // 
+            // buttonQuestionRemove
+            // 
+            buttonQuestionRemove.Location = new Point(444, 9);
+            buttonQuestionRemove.Name = "buttonQuestionRemove";
+            buttonQuestionRemove.Size = new Size(75, 41);
+            buttonQuestionRemove.TabIndex = 10;
+            buttonQuestionRemove.Text = "Remove Question";
+            buttonQuestionRemove.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -584,5 +616,8 @@
         private Button buttonClearMarks;
         private Button buttonShowWrong;
         private Button buttonUpdateXml;
+        private Button buttonQuestionRemove;
+        private Button buttonAddQuestion;
+        private TextBox textBoxQuestion;
     }
 }

@@ -79,20 +79,33 @@ namespace StudyFramework1
             return items;
         }
 
-        public Collection<string> UpdateSelectedSubtopic(int selectedIndex)
+        public void UpdateSelectedSubtopic(int selectedIndex, Dictionary<string, string> qaPairs)
         {
-            Collection<string> items = [];
-            if ((xml == null) || (xml.Root == null)) { return items; }
+            qaPairs.Clear();
+            if ((xml == null) || (xml.Root == null)) { return; }
             XElement? subtopicElement = GetSubTopicNode(selectedIndex);
-            if (subtopicElement == null) { return items; }
-/*            topicIndex = selectedIndex;
+            if (subtopicElement == null) { return; }
+            subTopicIndex = selectedIndex;
 
-            foreach (XElement descElement in subtopicElement.Descendants("subTopicName"))
+            foreach (XElement descElement in subtopicElement.Descendants("qaPair"))
             {
-                items.Add(descElement.Value);
-            }*/
-
-            return items;
+                if (descElement.Value != null)
+                {
+                    foreach (XElement qNode in descElement.Descendants("question"))
+                    {
+                        if (qNode.Value != null)
+                        {
+                            foreach (XElement aNode in descElement.Descendants("answer"))
+                            {
+                                if (aNode.Value != null)
+                                {
+                                    qaPairs.Add(qNode.Value, aNode.Value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         public void RemoveSubject(int index)
@@ -128,9 +141,9 @@ namespace StudyFramework1
             IEnumerable<XElement> desc = xml.Root.Descendants();
             foreach (XElement descElement in desc)
             {
-                if ((descElement.Name.LocalName == "subject") && (currentIndex == index))
+                if (descElement.Name.LocalName == "subject")
                 {
-                    return descElement;
+                    if (currentIndex++ == index) return descElement;
                 }
             }
             return null;
@@ -144,9 +157,9 @@ namespace StudyFramework1
 
             foreach (XElement descElement in subjectElement.Descendants())
             {
-                if ((descElement.Name.LocalName == "topic") && (currentIndex == index))
+                if (descElement.Name.LocalName == "topic") 
                 {
-                    return descElement;
+                    if (currentIndex++ == index) return descElement;
                 }
             }
             return null;
@@ -160,9 +173,9 @@ namespace StudyFramework1
 
             foreach (XElement descElement in topicElement.Descendants())
             {
-                if ((descElement.Name.LocalName == "subTopic") && (currentIndex == index))
+                if (descElement.Name.LocalName == "subtopic") 
                 {
-                    return descElement;
+                    if (currentIndex++ == index) return descElement;
                 }
             }
             return null;
