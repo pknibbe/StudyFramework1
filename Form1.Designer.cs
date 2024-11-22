@@ -60,6 +60,7 @@
             panel3 = new Panel();
             buttonDeleteSubject = new Button();
             panel10 = new Panel();
+            labelResult = new Label();
             buttonQuestionRemove = new Button();
             buttonAddQuestion = new Button();
             textBoxQuestion = new TextBox();
@@ -423,6 +424,7 @@
             // 
             // panel10
             // 
+            panel10.Controls.Add(labelResult);
             panel10.Controls.Add(buttonQuestionRemove);
             panel10.Controls.Add(buttonAddQuestion);
             panel10.Controls.Add(textBoxQuestion);
@@ -439,6 +441,15 @@
             panel10.Name = "panel10";
             panel10.Size = new Size(745, 138);
             panel10.TabIndex = 3;
+            // 
+            // labelResult
+            // 
+            labelResult.AutoSize = true;
+            labelResult.Location = new Point(82, 117);
+            labelResult.Name = "labelResult";
+            labelResult.Size = new Size(39, 15);
+            labelResult.TabIndex = 11;
+            labelResult.Text = "Result";
             // 
             // buttonQuestionRemove
             // 
@@ -470,7 +481,7 @@
             // 
             // buttonUpdateXml
             // 
-            buttonUpdateXml.Location = new Point(444, 81);
+            buttonUpdateXml.Location = new Point(444, 74);
             buttonUpdateXml.Name = "buttonUpdateXml";
             buttonUpdateXml.Size = new Size(75, 39);
             buttonUpdateXml.TabIndex = 7;
@@ -480,39 +491,43 @@
             // 
             // buttonClearMarks
             // 
-            buttonClearMarks.Location = new Point(356, 81);
+            buttonClearMarks.Location = new Point(356, 74);
             buttonClearMarks.Name = "buttonClearMarks";
             buttonClearMarks.Size = new Size(75, 39);
             buttonClearMarks.TabIndex = 6;
             buttonClearMarks.Text = "Clear Marks";
             buttonClearMarks.UseVisualStyleBackColor = true;
+            buttonClearMarks.Click += buttonClearMarks_Click;
             // 
             // buttonShowWrong
             // 
-            buttonShowWrong.Location = new Point(270, 81);
+            buttonShowWrong.Location = new Point(270, 74);
             buttonShowWrong.Name = "buttonShowWrong";
             buttonShowWrong.Size = new Size(75, 39);
             buttonShowWrong.TabIndex = 5;
             buttonShowWrong.Text = "Show Wrong";
             buttonShowWrong.UseVisualStyleBackColor = true;
+            buttonShowWrong.Click += buttonShowWrong_Click;
             // 
             // buttonMarkIncorrect
             // 
-            buttonMarkIncorrect.Location = new Point(189, 81);
+            buttonMarkIncorrect.Location = new Point(189, 74);
             buttonMarkIncorrect.Name = "buttonMarkIncorrect";
             buttonMarkIncorrect.Size = new Size(75, 39);
             buttonMarkIncorrect.TabIndex = 4;
             buttonMarkIncorrect.Text = "Mark Incorrect";
             buttonMarkIncorrect.UseVisualStyleBackColor = true;
+            buttonMarkIncorrect.Click += buttonMarkIncorrect_Click;
             // 
             // buttonMarkCorrect
             // 
-            buttonMarkCorrect.Location = new Point(108, 81);
+            buttonMarkCorrect.Location = new Point(108, 74);
             buttonMarkCorrect.Name = "buttonMarkCorrect";
             buttonMarkCorrect.Size = new Size(75, 39);
             buttonMarkCorrect.TabIndex = 3;
             buttonMarkCorrect.Text = "Mark Correct";
             buttonMarkCorrect.UseVisualStyleBackColor = true;
+            buttonMarkCorrect.Click += buttonMarkCorrect_Click;
             // 
             // labelAnswer
             // 
@@ -525,12 +540,13 @@
             // 
             // buttonShowAnswer
             // 
-            buttonShowAnswer.Location = new Point(16, 81);
+            buttonShowAnswer.Location = new Point(16, 74);
             buttonShowAnswer.Name = "buttonShowAnswer";
             buttonShowAnswer.Size = new Size(75, 39);
             buttonShowAnswer.TabIndex = 1;
             buttonShowAnswer.Text = "Show Answer";
             buttonShowAnswer.UseVisualStyleBackColor = true;
+            buttonShowAnswer.Click += buttonShowAnswer_Click;
             // 
             // labelQuestion
             // 
@@ -621,5 +637,6 @@
         private Button buttonQuestionRemove;
         private Button buttonAddQuestion;
         private TextBox textBoxQuestion;
+        private Label labelResult;
     }
 }

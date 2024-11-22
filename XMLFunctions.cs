@@ -20,6 +20,9 @@ namespace StudyFramework1
         int subTopicIndex = 0;
         int questionIndex = 0; 
         public string newQuestion = string.Empty;
+        string currentAnswer = string.Empty;
+        bool? currentGrade = null;
+        XElement? gradeElement;
 
         /// <summary>
         /// Reads the xml file and extracts the top-level subject names
@@ -78,6 +81,11 @@ namespace StudyFramework1
             }
         }
 
+        /// <summary>
+        /// Create an ungraded question and answer pair. GetQuestion compares the grade with input parameter skipPassed.
+        /// </summary>
+        /// <param name="question"></param>
+        /// <param name="answer"></param>
         public void AddQAG(string question, string answer)
         {
             if ((xml == null) || (xml.Root == null)) return;
@@ -85,7 +93,7 @@ namespace StudyFramework1
             if (subtopicElement == null) return;
             foreach (XElement node in subtopicElement.Descendants("questions"))
             {
-                node.Add(new XElement("qaPair", new XElement("question", question), new XElement("answer", answer), new XElement("grade",0)));
+                node.Add(new XElement("qaPair", new XElement("question", question), new XElement("answer", answer), new XElement("grade","-1")));
                 return;
             }
         }
@@ -154,26 +162,63 @@ namespace StudyFramework1
             }*/
         }
 
+        /// <summary>
+        /// Gets the current question, counting only unpassed questions if skipPassed.
+        /// </summary>
+        /// <param name="skipPassed"></param>
+        /// <returns></returns>
         public string GetQuestion(bool skipPassed)
         {
             XElement? subtopicElement = GetSubTopicNode(subTopicIndex);
             if (subtopicElement == null) {return string.Empty; }
             int currentIndex = 0;
+            string returnValue = string.Empty;
 
             foreach (XElement descElement in subtopicElement.Descendants("qaPair"))
             {
+                foreach (XElement qNode in descElement.Descendants("grade"))
+                {
+                    gradeElement = qNode;
+                    if ((qNode.Value == null) || (qNode.Value == "-1"))
+                    {
+                        currentGrade = null;
+                    }
+                    else
+                    {
+                        currentGrade = (qNode.Value == "0") ? false : true;
+                    }
+                }
+                if (skipPassed && (currentGrade == true)) continue;
+
+                if (currentIndex++ != questionIndex) continue;
                 if (descElement.Value != null)
                 {
                     foreach (XElement qNode in descElement.Descendants("question"))
                     {
-                        if (qNode.Value != null)
-                        {
-                            if (currentIndex++ == questionIndex) return qNode.Value;
-                        }
+                         returnValue = qNode.Value;
                     }
+                    foreach (XElement qNode in descElement.Descendants("answer"))
+                    {
+                        currentAnswer = qNode.Value;
+                    }
+
                 }
             }
             return string.Empty;
+        }
+
+        public string getAnswer() { return currentAnswer; }
+
+        public void markAnswerCorrect() { if (gradeElement != null) gradeElement.Value = "1"; }
+        public void markAnswerIncorrect() { if (gradeElement != null) gradeElement.Value = "0"; }
+
+        public void clearAllMarks()
+        {
+            foreach (XElement qNode in xml.Descendants("grade"))
+            {
+                qNode.Remove();
+            }
+
         }
 
         public void RemoveSubject(int index)
@@ -212,7 +257,7 @@ namespace StudyFramework1
             if ((xml == null) || (xml.Root == null)) { return; }
             XElement? subjectElement = GetSubjectNode(subjectIndex);
             if (subjectElement == null) { return; }
-            subjectElement.Save(rootPath + subjectName); 
+            subjectElement.Save(rootPath + subjectName + ".xml"); 
         }
 
         private XElement? GetSubjectNode(int index)
