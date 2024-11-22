@@ -4,7 +4,7 @@ namespace StudyFramework1
     {
         readonly XMLFunctions xMLFunctions = new();
         readonly System.Collections.ObjectModel.Collection<string> items = [];
-        readonly Dictionary<string, string> qaPairs = new Dictionary<string, string>();
+        bool skipPassed = false;
 
         public Form1()
         {
@@ -52,21 +52,15 @@ namespace StudyFramework1
 
         private void ComboBoxSubTopic_SelectedIndexChanged(object sender, EventArgs e)
         {
-            xMLFunctions.UpdateSelectedSubtopic(comboBoxSubject.SelectedIndex, qaPairs);
-            foreach (KeyValuePair<string, string> pair in qaPairs)
-            {
-                labelQuestion.Text = pair.Key;
-                labelAnswer.Text = pair.Value;
-                labelAnswer.Visible = false;
-                return;
-            }
+            xMLFunctions.UpdateSelectedSubtopic(comboBoxSubject.SelectedIndex);
+            xMLFunctions.GetQuestion(skipPassed);
         }
 
         private void ButtonAddSubject_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(textBoxSubject.Text)) { return; }
+            if (String.IsNullOrEmpty(textBoxSubject.Text)) return;
             _ = comboBoxSubject.Items.Add(textBoxSubject.Text);
-            xMLFunctions.AddSubject(textBoxSubject.Text);
+            xMLFunctions.AddSubject(textBoxSubject.Text, comboBoxSubject.Items.Count - 1);
             textBoxSubject.Text = string.Empty;
 
             if (comboBoxSubject.Items.Count > 0)
@@ -78,9 +72,9 @@ namespace StudyFramework1
 
         private void ButtonAddTopic_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(textBoxTopic.Text)) { return; }
+            if (String.IsNullOrEmpty(textBoxTopic.Text)) return;
             _ = comboBoxTopic.Items.Add(textBoxTopic.Text);
-            xMLFunctions.AddTopic(textBoxTopic.Text);
+            xMLFunctions.AddTopic(textBoxTopic.Text, comboBoxTopic.Items.Count - 1);
             textBoxTopic.Text = string.Empty;
 
             if (comboBoxTopic.Items.Count > 0)
@@ -93,9 +87,9 @@ namespace StudyFramework1
 
         private void ButtonAddSubTopic_Click(object sender, EventArgs e)
         {
-            if (String.IsNullOrEmpty(textBoxSubTopic.Text)) { return; }
+            if (String.IsNullOrEmpty(textBoxSubTopic.Text)) return;
             _ = comboBoxSubTopic.Items.Add(textBoxSubTopic.Text);
-            xMLFunctions.AddSubTopic(textBoxSubTopic.Text);
+            xMLFunctions.AddSubTopic(textBoxSubTopic.Text, comboBoxSubTopic.Items.Count - 1);
             textBoxSubTopic.Text = string.Empty;
 
             if (comboBoxSubTopic.Items.Count > 0)
@@ -103,7 +97,18 @@ namespace StudyFramework1
                 comboBoxSubTopic.SelectedIndex = comboBoxSubTopic.Items.Count - 1;
                 return;
             }
+        }
 
+
+        private void buttonAddQuestion_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(textBoxQuestion.Text)) return;
+            if (buttonAddQuestion.Text == "Add Question")
+            {
+                xMLFunctions.newQuestion = textBoxQuestion.Text;
+                buttonAddQuestion.Text = "Add Answer";
+            }
+            else xMLFunctions.AddQAG(xMLFunctions.newQuestion, textBoxQuestion.Text);
         }
 
         private void ButtonDeleteSubject_click(object sender, EventArgs e)
@@ -144,9 +149,14 @@ namespace StudyFramework1
 
         }
 
+        private void buttonQuestionRemove_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void ButtonUpdateXml_Click(object sender, EventArgs e)
         {
-            xMLFunctions.UpdateXMLFile();
+            xMLFunctions.UpdateXMLFile(comboBoxSubject.Text);
         }
     }
 }
