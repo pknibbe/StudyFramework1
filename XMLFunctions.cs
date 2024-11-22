@@ -23,6 +23,7 @@ namespace StudyFramework1
         string currentAnswer = string.Empty;
         bool? currentGrade = null;
         XElement? gradeElement;
+        XElement? questionElement;
 
         /// <summary>
         /// Reads the xml file and extracts the top-level subject names
@@ -193,6 +194,7 @@ namespace StudyFramework1
                 if (currentIndex++ != questionIndex) continue;
                 if (descElement.Value != null)
                 {
+                    questionElement = descElement;
                     foreach (XElement qNode in descElement.Descendants("question"))
                     {
                          returnValue = qNode.Value;
@@ -244,12 +246,14 @@ namespace StudyFramework1
             subtopicNode.Remove();
         }
 
-        public void RemoveQuestion(int index)
+        public void RemoveQuestion()
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
-            XElement? questionNode = GetQuestionNode(index);
-            if (questionNode == null) { return; }
-            questionNode.Remove();
+            if (questionElement == null)  return; 
+            questionElement.Remove();
+            questionElement = null;
+            gradeElement = null;
+            currentAnswer = string.Empty;
+            questionIndex = 0;
         }
 
         public void UpdateXMLFile(string subjectName)

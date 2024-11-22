@@ -168,7 +168,7 @@ namespace StudyFramework1
 
         private void buttonQuestionRemove_Click(object sender, EventArgs e)
         {
-            labelResult.Text = "Function not yet implemented";
+            xMLFunctions.RemoveQuestion();
 
         }
 
