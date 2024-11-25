@@ -3,13 +3,12 @@ namespace StudyFramework1
     public partial class Form1 : Form
     {
         readonly XMLFunctions xMLFunctions = new();
-        readonly System.Collections.ObjectModel.Collection<string> items = [];
         bool skipPassed = false;
 
         public Form1()
         {
             InitializeComponent();
-            items = xMLFunctions.InitializeDoc();
+            List<string> items = xMLFunctions.InitializeDoc();
             if (items.Count > 0)
             {
                 foreach (string item in items)
@@ -67,7 +66,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (String.IsNullOrEmpty(textBoxSubject.Text)) return;
             _ = comboBoxSubject.Items.Add(textBoxSubject.Text);
-            xMLFunctions.AddSubject(textBoxSubject.Text, comboBoxSubject.Items.Count - 1);
+            xMLFunctions.AddSubject(textBoxSubject.Text);
             textBoxSubject.Text = string.Empty;
 
             if (comboBoxSubject.Items.Count > 0)

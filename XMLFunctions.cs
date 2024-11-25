@@ -13,11 +13,12 @@ namespace StudyFramework1
     internal class XMLFunctions
     {
         readonly static string rootPath = "D:\\repos/C#/StudyFramework1/XML/";
-        readonly string docPath = rootPath + "XMLFile1.xml";
-        XDocument xml = new();
-        int subjectIndex = 0;
-        int topicIndex = 0;
-        int subTopicIndex = 0;
+        static readonly string subjectFileExtension = ".xml";
+        List<string> subjects = [];
+        XDocument? subjectXml;
+        XElement? topicXml;
+        XElement? SubTopicXml;
+        XElement? QuestionXml;
         int questionIndex = 0; 
         public string newQuestion = string.Empty;
         string currentAnswer = string.Empty;
@@ -26,60 +27,38 @@ namespace StudyFramework1
         XElement? questionElement;
 
         /// <summary>
-        /// Reads the xml file and extracts the top-level subject names
+        /// Reads the xml directory and extracts the top-level subject names from the xml file names
         /// </summary>
         /// <returns>The names of the top-level subjects</returns>
-        public Collection<string> InitializeDoc()
+        public List<string> InitializeDoc()
         {
-            Collection<string> items = [];
-            xml = XDocument.Load(docPath);
+            foreach (string filePath in Directory.GetFiles(rootPath, "*.xml")) 
+                if (!string.IsNullOrEmpty(filePath)) subjects.Add( Path.GetFileNameWithoutExtension(filePath));
 
-            if ((xml == null) || (xml.Root == null))  return items; 
-
-            var query = from c in xml.Root.Descendants("subjectName") select c;
-            if ((query == null) || (query.ToString() == string.Empty))  return items; 
-            foreach (XElement element in query)
-            {
-                if (element.FirstNode == null)  continue; 
-                items.Add(element.FirstNode.ToString());
-            }
-
-            return items;
+            return subjects;
         }
 
-        public void AddSubject(string subject, int count) 
+        public void AddSubject(string subject)
         {
-            if ((xml == null) || (xml.Root == null)) return;
-            foreach (XElement node in xml.Root.Descendants("subjects"))
-            {
-                node.Add(new XElement("subject", new XElement("subjectName", subject)));
-                subjectIndex = count;
-                return;
-            }
+            XElement subjectNameElement = new XElement("subjectName", subject);
+            XElement subjectElement = new XElement("subject", subjectNameElement);
+            subjectXml = new XDocument(subjectElement);
+            if (subjects != null) subjects.Add( subject);
+            UpdateXMLFile(subject);
         }
+
         public void AddTopic(string topic, int count) 
         {
-            if ((xml == null) || (xml.Root == null)) return;
-            XElement? subjectElement = GetSubjectNode(subjectIndex);
-            if (subjectElement == null) return;
-            foreach (XElement node in subjectElement.Descendants("Topics"))
-            {
-                node.Add(new XElement("topic", new XElement("topicName", topic)));
-                topicIndex = count;
-                return;
-            }
+            if (subjectXml == null) return;
+
+            subjectXml.Add(new XElement("topic", new XElement("topicName", topic)));
+            SubTopicXml = null;
         }
         public void AddSubTopic(string subTopic, int count) 
         {
-            if ((xml == null) || (xml.Root == null)) return;
-            XElement? topicElement = GetTopicNode(topicIndex);
+            XElement? topicElement = topicXml;
             if (topicElement == null) return;
-            foreach (XElement node in topicElement.Descendants("subTopics"))
-            {
-                node.Add(new XElement("subTopic", new XElement("subTopicName", subTopic)));
-                subTopicIndex = count;
-                return;
-            }
+            topicElement.Add(new XElement("subTopic", new XElement("subTopicName", subTopic)));
         }
 
         /// <summary>
@@ -89,8 +68,7 @@ namespace StudyFramework1
         /// <param name="answer"></param>
         public void AddQAG(string question, string answer)
         {
-            if ((xml == null) || (xml.Root == null)) return;
-            XElement? subtopicElement = GetSubTopicNode(subTopicIndex);
+            XElement? subtopicElement = topicXml;
             if (subtopicElement == null) return;
             foreach (XElement node in subtopicElement.Descendants("questions"))
             {
@@ -101,15 +79,14 @@ namespace StudyFramework1
 
         public Collection<string> UpdateSelectedSubject(int selectedIndex)
         {
-            topicIndex = 0; subTopicIndex = 0;
+            if (subjects == null) return new Collection<string>();
 
             Collection<string> items = [];
-            if ((xml == null) || (xml.Root == null)) { return items; }
-            XElement? subjectElement = GetSubjectNode(selectedIndex);
-            if (subjectElement == null) { return items; }
-            subjectIndex = selectedIndex;
+            subjectXml = XDocument.Load(rootPath + subjects[selectedIndex] + subjectFileExtension);
 
-            foreach (XElement kiddle in subjectElement.Descendants("topicName"))
+            if (subjectXml == null)  return items; 
+
+            foreach (XElement kiddle in subjectXml.Descendants("topicName"))
             {
                 items.Add(kiddle.Value);
             }
@@ -119,14 +96,11 @@ namespace StudyFramework1
 
         public Collection<string> UpdateSelectedTopic(int selectedIndex)
         {
-            subTopicIndex = 0;
             Collection<string> items = [];
-            if ((xml == null) || (xml.Root == null)) { return items; }
-            XElement? topicElement = GetTopicNode(selectedIndex);
-            if (topicElement == null) { return items; }
-            topicIndex = selectedIndex;
+            topicXml = GetTopicNode(selectedIndex);
+            if (topicXml == null) { return items; }
 
-            foreach (XElement descElement in topicElement.Descendants("subTopicName"))
+            foreach (XElement descElement in topicXml.Descendants("subTopicName"))
             {
                 items.Add(descElement.Value);
             }
@@ -136,31 +110,7 @@ namespace StudyFramework1
 
         public void UpdateSelectedSubtopic(int selectedIndex)
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
-            XElement? subtopicElement = GetSubTopicNode(selectedIndex);
-            if (subtopicElement == null) { return; }
-            subTopicIndex = selectedIndex;
-            questionIndex = 0;
-
-/*            foreach (XElement descElement in subtopicElement.Descendants("qaPair"))
-            {
-                if (descElement.Value != null)
-                {
-                    foreach (XElement qNode in descElement.Descendants("question"))
-                    {
-                        if (qNode.Value != null)
-                        {
-                            foreach (XElement aNode in descElement.Descendants("answer"))
-                            {
-                                if (aNode.Value != null)
-                                {
-                                    qaPairs.Add(qNode.Value, aNode.Value);
-                                }
-                            }
-                        }
-                    }
-                }
-            }*/
+            SubTopicXml = GetSubTopicNode(selectedIndex);
         }
 
         /// <summary>
@@ -170,7 +120,7 @@ namespace StudyFramework1
         /// <returns></returns>
         public string GetQuestion(bool skipPassed)
         {
-            XElement? subtopicElement = GetSubTopicNode(subTopicIndex);
+            XElement? subtopicElement = topicXml;
             if (subtopicElement == null) {return string.Empty; }
             int currentIndex = 0;
             string returnValue = string.Empty;
@@ -216,7 +166,8 @@ namespace StudyFramework1
 
         public void clearAllMarks()
         {
-            foreach (XElement qNode in xml.Descendants("grade"))
+            if (subjectXml == null) return;
+            foreach (XElement qNode in subjectXml.Descendants("grade"))
             {
                 qNode.Remove();
             }
@@ -225,24 +176,22 @@ namespace StudyFramework1
 
         public void RemoveSubject(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
-            XElement? subjectNode = GetSubjectNode(index);
-            if (subjectNode == null) { return; }
-            subjectNode.Remove();
+            if ((subjects == null) || (subjects.Count < index + 1))  return; 
+            subjectXml = null;
+            if (File.Exists(rootPath + subjects[index] + subjectFileExtension)) File.Delete(rootPath + subjects[index] + subjectFileExtension);
+            subjects.RemoveAt(index);
         }
         public void RemoveTopic(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
             XElement? topicNode = GetTopicNode(index);
-            if (topicNode == null) { return; }
+            if (topicNode == null)  return; 
             topicNode.Remove();
         }
 
         public void RemoveSubTopic(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
             XElement? subtopicNode = GetSubTopicNode(index);
-            if (subtopicNode == null) { return; }
+            if (subtopicNode == null)  return; 
             subtopicNode.Remove();
         }
 
@@ -258,35 +207,24 @@ namespace StudyFramework1
 
         public void UpdateXMLFile(string subjectName)
         {
-            if ((xml == null) || (xml.Root == null)) { return; }
-            XElement? subjectElement = GetSubjectNode(subjectIndex);
-            if (subjectElement == null) { return; }
-            subjectElement.Save(rootPath + subjectName + ".xml"); 
+            if (subjectXml == null) { return; }
+            subjectXml.Save(rootPath + subjectName + subjectFileExtension); 
         }
 
         private XElement? GetSubjectNode(int index)
         {
-            int currentIndex = 0;
-            if ((xml == null) || (xml.Root == null)) { return null; }
-
-            foreach (XElement descElement in xml.Root.Descendants())
-            {
-                if (descElement.Name.LocalName == "subject")
-                {
-                    if (currentIndex++ == index) return descElement;
-                }
-            }
+            if (subjects == null) return null;
+            subjectXml = XDocument.Load(rootPath + subjects[index] + subjectFileExtension);
+            foreach (XElement node in subjectXml.Descendants("subject")) return node;
             return null;
         }
 
         private XElement? GetTopicNode(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return null; }
-            XElement? subjectElement = GetSubjectNode(subjectIndex);
-            if (subjectElement == null) { return null; }
+            if (subjectXml == null)  return null; 
             int currentIndex = 0;
 
-            foreach (XElement descElement in subjectElement.Descendants())
+            foreach (XElement descElement in subjectXml.Descendants())
             {
                 if (descElement.Name.LocalName == "topic") 
                 {
@@ -298,16 +236,18 @@ namespace StudyFramework1
 
         private XElement? GetSubTopicNode(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return null; }
-            XElement? topicElement = GetTopicNode(topicIndex);
-            if (topicElement == null) { return null; }
+            if (topicXml == null)  return null; 
             int currentIndex = 0;
 
-            foreach (XElement descElement in topicElement.Descendants())
+            foreach (XElement descElement in topicXml.Descendants())
             {
                 if (descElement.Name.LocalName == "subtopic") 
                 {
-                    if (currentIndex++ == index) return descElement;
+                    if (currentIndex++ == index)
+                    {
+                        SubTopicXml = descElement;
+                        return descElement;
+                    }
                 }
             }
             return null;
@@ -315,9 +255,8 @@ namespace StudyFramework1
 
         private XElement? GetQuestionNode(int index)
         {
-            if ((xml == null) || (xml.Root == null)) { return null; }
-            XElement? subTopicElement = GetSubTopicNode(subTopicIndex);
-            if (subTopicElement == null) { return null; }
+            XElement? subTopicElement = topicXml;
+            if (subTopicElement == null)  return null; 
             int currentIndex = 0;
 
             foreach (XElement descElement in subTopicElement.Descendants())
@@ -328,15 +267,6 @@ namespace StudyFramework1
                 }
             }
             return null;
-        }
-
-
-
-        private void WriteDefaultElements()
-        {
-            XmlTextWriter writer = new(docPath, Encoding.UTF8);
-            writer.WriteStartDocument();
-            writer.WriteStartElement("Subject");
         }
     }
 }
