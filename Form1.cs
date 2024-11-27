@@ -82,7 +82,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (String.IsNullOrEmpty(textBoxTopic.Text)) return;
             _ = comboBoxTopic.Items.Add(textBoxTopic.Text);
-            xMLFunctions.AddTopic(textBoxTopic.Text, comboBoxTopic.Items.Count - 1);
+            xMLFunctions.AddTopic(textBoxTopic.Text);
             textBoxTopic.Text = string.Empty;
 
             if (comboBoxTopic.Items.Count > 0)
@@ -98,7 +98,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (String.IsNullOrEmpty(textBoxSubTopic.Text)) return;
             _ = comboBoxSubTopic.Items.Add(textBoxSubTopic.Text);
-            xMLFunctions.AddSubTopic(textBoxSubTopic.Text, comboBoxSubTopic.Items.Count - 1);
+            xMLFunctions.AddSubTopic(textBoxSubTopic.Text);
             textBoxSubTopic.Text = string.Empty;
 
             if (comboBoxSubTopic.Items.Count > 0)
@@ -144,7 +144,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (comboBoxTopic.Items.Count > 0)
             {
-                xMLFunctions.RemoveTopic(comboBoxTopic.SelectedIndex);
+                xMLFunctions.RemoveTopic();
                 comboBoxTopic.Items.Remove(comboBoxTopic.SelectedItem);
                 comboBoxTopic.Text = string.Empty;
                 comboBoxSubTopic.Items.Clear();
@@ -158,7 +158,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (comboBoxSubTopic.Items.Count > 0)
             {
-                xMLFunctions.RemoveSubTopic(comboBoxSubTopic.SelectedIndex);
+                xMLFunctions.RemoveSubTopic();
                 comboBoxSubTopic.Items.Remove(comboBoxSubTopic.SelectedItem);
                 comboBoxSubTopic.Text = string.Empty;
             }

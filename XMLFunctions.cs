@@ -16,15 +16,18 @@ namespace StudyFramework1
         static readonly string subjectFileExtension = ".xml";
         List<string> subjects = [];
         XDocument? subjectXml;
-        XElement? topicXml;
-        XElement? SubTopicXml;
-        XElement? QuestionXml;
+        XElement? subjectElement;
+        string? subjectName;
+        XElement? topicElement;
+        XElement? subTopicElement;
+        XElement? questionElement = null;
+        XElement? answerElement = null;
+        XElement? gradeElement = null;
+        XElement? qaElement;
         int questionIndex = 0; 
         public string newQuestion = string.Empty;
         string currentAnswer = string.Empty;
         bool? currentGrade = null;
-        XElement? gradeElement;
-        XElement? questionElement;
 
         /// <summary>
         /// Reads the xml directory and extracts the top-level subject names from the xml file names
@@ -38,69 +41,110 @@ namespace StudyFramework1
             return subjects;
         }
 
+        /// <summary>
+        /// Creates a new subject xml document if it doesn't already exist
+        /// </summary>
+        /// <param name="subject"></param>
         public void AddSubject(string subject)
         {
+            if (File.Exists(rootPath + subject + subjectFileExtension))
+            {
+                //labelResult.Text = subject + " already exists";
+                return;
+            }
             XElement subjectNameElement = new XElement("subjectName", subject);
-            XElement subjectElement = new XElement("subject", subjectNameElement);
+            subjectElement = new XElement("subject", subjectNameElement);
             subjectXml = new XDocument(subjectElement);
             if (subjects != null) subjects.Add( subject);
-            UpdateXMLFile(subject);
+            subjectName = subject;
+            UpdateXMLFile(subjectName);
         }
 
-        public void AddTopic(string topic, int count) 
+        /// <summary>
+        /// Add a major topic to the current subject xml
+        /// </summary>
+        /// <param name="topic"></param>
+        public void AddTopic(string topic) 
         {
-            if (subjectXml == null) return;
-
-            subjectXml.Add(new XElement("topic", new XElement("topicName", topic)));
-            SubTopicXml = null;
+            XElement newTopicNameElement = new XElement("topicName", topic);
+            if ((subjectElement == null) || subjectElement.Descendants("topicName").Contains(newTopicNameElement)) return;
+            topicElement = new XElement("topic", newTopicNameElement);
+            subjectElement.Add(topicElement);
+            subTopicElement = null;
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
-        public void AddSubTopic(string subTopic, int count) 
+
+        /// <summary>
+        /// Add a minor topic to the current major topic in the subject xml
+        /// </summary>
+        /// <param name="subTopic"></param>
+        public void AddSubTopic(string subTopic) 
         {
-            XElement? topicElement = topicXml;
-            if (topicElement == null) return;
-            topicElement.Add(new XElement("subTopic", new XElement("subTopicName", subTopic)));
+            XElement newSubTopicNameElement = new XElement("topicName", subTopic);
+            if ((topicElement == null) || topicElement.Descendants("subTopicName").Contains(newSubTopicNameElement)) return;
+            subTopicElement = new XElement("subTopic", newSubTopicNameElement);
+            topicElement.Add(subTopicElement);
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
 
         /// <summary>
         /// Create an ungraded question and answer pair. GetQuestion compares the grade with input parameter skipPassed.
         /// </summary>
-        /// <param name="question"></param>
-        /// <param name="answer"></param>
+        /// <param name="question">The question to ask the user</param>
+        /// <param name="answer">The answer to show the user</param>
         public void AddQAG(string question, string answer)
         {
-            XElement? subtopicElement = topicXml;
-            if (subtopicElement == null) return;
-            foreach (XElement node in subtopicElement.Descendants("questions"))
+            if (subTopicElement == null) return;
+            questionElement = new XElement("question", question);
+            answerElement = new XElement("answer", answer);
+            gradeElement = new XElement("grade", "-1");
+            if (subTopicElement.Descendants("question").Contains(questionElement)) return;
+            foreach (XElement node in subTopicElement.Descendants("questions"))
             {
-                node.Add(new XElement("qaPair", new XElement("question", question), new XElement("answer", answer), new XElement("grade","-1")));
+                node.Add(new XElement("qaPair", questionElement, answerElement , gradeElement));
+                if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
                 return;
             }
         }
 
+        /// <summary>
+        /// Loads the current subject from the xml files
+        /// </summary>
+        /// <param name="selectedIndex"></param>
+        /// <returns>The names of the topics within the subject</returns>
         public Collection<string> UpdateSelectedSubject(int selectedIndex)
         {
             if (subjects == null) return new Collection<string>();
+            subjectName = subjects[selectedIndex];
 
             Collection<string> items = [];
+            if (!File.Exists(rootPath + subjects[selectedIndex] + subjectFileExtension)) return items;
             subjectXml = XDocument.Load(rootPath + subjects[selectedIndex] + subjectFileExtension);
 
-            if (subjectXml == null)  return items; 
+            foreach (XElement node in subjectXml.Descendants("subject")) subjectElement = node;
 
-            foreach (XElement kiddle in subjectXml.Descendants("topicName"))
+            if (subjectElement == null)  return items; 
+
+            foreach (XElement descTopicElement in subjectElement.Descendants("topicName"))
             {
-                items.Add(kiddle.Value);
+                items.Add(descTopicElement.Value);
             }
 
             return items;
         }
 
+        /// <summary>
+        /// Loads the current major topic from the subject xml
+        /// </summary>
+        /// <param name="selectedIndex"></param>
+        /// <returns>The names of the minor topics within the major topic</returns>
         public Collection<string> UpdateSelectedTopic(int selectedIndex)
         {
             Collection<string> items = [];
-            topicXml = GetTopicNode(selectedIndex);
-            if (topicXml == null) { return items; }
+            topicElement = GetTopicNode(selectedIndex);
+            if (topicElement == null) { return items; }
 
-            foreach (XElement descElement in topicXml.Descendants("subTopicName"))
+            foreach (XElement descElement in topicElement.Descendants("subTopicName"))
             {
                 items.Add(descElement.Value);
             }
@@ -108,9 +152,14 @@ namespace StudyFramework1
             return items;
         }
 
+        /// <summary>
+        /// Loads the current minor topic from the major topic. Does not preload the questions as only one at a time will be displayed
+        /// </summary>
+        /// <param name="selectedIndex"></param>
         public void UpdateSelectedSubtopic(int selectedIndex)
         {
-            SubTopicXml = GetSubTopicNode(selectedIndex);
+            subTopicElement = GetSubTopicNode(selectedIndex);
+            questionIndex = 0;
         }
 
         /// <summary>
@@ -120,49 +169,93 @@ namespace StudyFramework1
         /// <returns></returns>
         public string GetQuestion(bool skipPassed)
         {
-            XElement? subtopicElement = topicXml;
-            if (subtopicElement == null) {return string.Empty; }
+            if (subTopicElement == null) {return string.Empty; }
             int currentIndex = 0;
             string returnValue = string.Empty;
+            currentGrade = null;
+            IEnumerable<XElement> elements = subTopicElement.Descendants("qaPair");
 
-            foreach (XElement descElement in subtopicElement.Descendants("qaPair"))
+            foreach (XElement descElement in subTopicElement.Descendants("qaPair"))
             {
+                if (descElement == null) return returnValue;
                 foreach (XElement qNode in descElement.Descendants("grade"))
                 {
                     gradeElement = qNode;
-                    if ((qNode.Value == null) || (qNode.Value == "-1"))
+                    if ((gradeElement != null) && (qNode.Value != null) && (qNode.Value != "-1"))
                     {
-                        currentGrade = null;
-                    }
-                    else
-                    {
-                        currentGrade = (qNode.Value == "0") ? false : true;
+                        currentGrade = qNode.Value != "0";
                     }
                 }
                 if (skipPassed && (currentGrade == true)) continue;
 
                 if (currentIndex++ != questionIndex) continue;
-                if (descElement.Value != null)
-                {
-                    questionElement = descElement;
-                    foreach (XElement qNode in descElement.Descendants("question"))
-                    {
-                         returnValue = qNode.Value;
-                    }
-                    foreach (XElement qNode in descElement.Descendants("answer"))
-                    {
-                        currentAnswer = qNode.Value;
-                    }
 
+                qaElement = descElement;
+
+                foreach (XElement qNode in descElement.Descendants("question"))
+                {
+                    questionElement = qNode;
+                    returnValue = qNode.Value;
                 }
+                foreach (XElement qNode in descElement.Descendants("answer"))
+                {
+                    answerElement = qNode;
+                    currentAnswer = qNode.Value;
+                }
+                if (gradeElement == null)
+                {
+                    gradeElement = new XElement("grade", "-1");
+                    qaElement.Remove();
+                    if (questionElement != null)
+                    {
+                        qaElement = new XElement("qaPair", questionElement, answerElement, gradeElement);
+                        descElement.Add(qaElement);
+                    }
+                }
+                return returnValue;
             }
-            return string.Empty;
+            return returnValue;
         }
 
         public string getAnswer() { return currentAnswer; }
 
-        public void markAnswerCorrect() { if (gradeElement != null) gradeElement.Value = "1"; }
-        public void markAnswerIncorrect() { if (gradeElement != null) gradeElement.Value = "0"; }
+        public void markAnswerCorrect() 
+        {
+            if (gradeElement != null)
+            {
+                gradeElement.Value = "1";
+            }
+            else
+            {
+                gradeElement = new XElement("grade", "1");
+            }
+            if (subTopicElement == null)  return;
+            if (qaElement != null) qaElement.Remove();
+
+            subTopicElement.Add(new XElement("qaPair", questionElement, answerElement, gradeElement));
+            
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+        }
+        public void markAnswerIncorrect()
+        {
+            if (gradeElement != null)
+            {
+                gradeElement.Value = "0";
+            }
+            else
+            {
+                gradeElement = new XElement("grade", "0");
+            }
+            if (subTopicElement == null) return;
+            if (qaElement != null) qaElement.Remove();
+
+            foreach (XElement descElement in subTopicElement.Descendants("qaPair"))
+            {
+                descElement.Add(new XElement("qaPair", questionElement, answerElement, gradeElement));
+            }
+
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+        }
 
         public void clearAllMarks()
         {
@@ -171,7 +264,7 @@ namespace StudyFramework1
             {
                 qNode.Remove();
             }
-
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
 
         public void RemoveSubject(int index)
@@ -180,43 +273,40 @@ namespace StudyFramework1
             subjectXml = null;
             if (File.Exists(rootPath + subjects[index] + subjectFileExtension)) File.Delete(rootPath + subjects[index] + subjectFileExtension);
             subjects.RemoveAt(index);
+            subjectElement = null;
+            subjectName = string.Empty;
         }
-        public void RemoveTopic(int index)
+        public void RemoveTopic()
         {
-            XElement? topicNode = GetTopicNode(index);
-            if (topicNode == null)  return; 
-            topicNode.Remove();
+            if (topicElement == null)  return;
+            topicElement.Remove();
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+            topicElement = null;
         }
 
-        public void RemoveSubTopic(int index)
+        public void RemoveSubTopic()
         {
-            XElement? subtopicNode = GetSubTopicNode(index);
-            if (subtopicNode == null)  return; 
-            subtopicNode.Remove();
+            if (subTopicElement == null)  return;
+            subTopicElement.Remove();
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+            subTopicElement = null;
         }
 
         public void RemoveQuestion()
         {
-            if (questionElement == null)  return; 
-            questionElement.Remove();
-            questionElement = null;
+            if (qaElement == null)  return; 
+            qaElement.Remove();
+            qaElement = null;
             gradeElement = null;
             currentAnswer = string.Empty;
             questionIndex = 0;
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
 
         public void UpdateXMLFile(string subjectName)
         {
             if (subjectXml == null) { return; }
             subjectXml.Save(rootPath + subjectName + subjectFileExtension); 
-        }
-
-        private XElement? GetSubjectNode(int index)
-        {
-            if (subjects == null) return null;
-            subjectXml = XDocument.Load(rootPath + subjects[index] + subjectFileExtension);
-            foreach (XElement node in subjectXml.Descendants("subject")) return node;
-            return null;
         }
 
         private XElement? GetTopicNode(int index)
@@ -236,34 +326,18 @@ namespace StudyFramework1
 
         private XElement? GetSubTopicNode(int index)
         {
-            if (topicXml == null)  return null; 
+            if (topicElement == null)  return null; 
             int currentIndex = 0;
 
-            foreach (XElement descElement in topicXml.Descendants())
+            foreach (XElement descElement in topicElement.Descendants())
             {
                 if (descElement.Name.LocalName == "subtopic") 
                 {
                     if (currentIndex++ == index)
                     {
-                        SubTopicXml = descElement;
+                        subTopicElement = descElement;
                         return descElement;
                     }
-                }
-            }
-            return null;
-        }
-
-        private XElement? GetQuestionNode(int index)
-        {
-            XElement? subTopicElement = topicXml;
-            if (subTopicElement == null)  return null; 
-            int currentIndex = 0;
-
-            foreach (XElement descElement in subTopicElement.Descendants())
-            {
-                if (descElement.Name.LocalName == "qaPair")
-                {
-                    if (currentIndex++ == index) return descElement;
                 }
             }
             return null;
