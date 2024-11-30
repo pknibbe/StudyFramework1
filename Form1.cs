@@ -56,7 +56,7 @@ namespace StudyFramework1
         {
             labelResult.Text = string.Empty;
             labelQuestion.Text = string.Empty;
-            labelAnswer.Text = string.Empty;
+            textBoxAnswer.Text = string.Empty;
             xMLFunctions.UpdateSelectedSubtopic(comboBoxSubject.SelectedIndex);
             labelQuestion.Text = xMLFunctions.GetQuestion(skipPassed);
         }
@@ -111,7 +111,7 @@ namespace StudyFramework1
         }
 
 
-        private void buttonAddQuestion_Click(object sender, EventArgs e)
+        private void ButtonAddQuestion_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
             if (String.IsNullOrEmpty(textBoxQuestion.Text)) return;
@@ -173,17 +173,9 @@ namespace StudyFramework1
 
         }
 
-        private void buttonQuestionRemove_Click(object sender, EventArgs e)
+        private void ButtonQuestionRemove_Click(object sender, EventArgs e)
         {
             xMLFunctions.RemoveQuestion();
-
-        }
-
-        private void ButtonUpdateXml_Click(object sender, EventArgs e)
-        {
-            labelResult.Text = string.Empty;
-            xMLFunctions.UpdateXMLFile(comboBoxSubject.Text);
-            labelResult.Text = "Subject saved to xml file";
         }
 
         /// <summary>
@@ -191,25 +183,45 @@ namespace StudyFramework1
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void buttonShowAnswer_Click(object sender, EventArgs e)
+        private void ButtonShowAnswer_Click(object sender, EventArgs e)
         {
-            labelAnswer.Text = xMLFunctions.getAnswer();
+            textBoxAnswer.Text = xMLFunctions.GetAnswer();
+            textBoxAnswer.Visible = true;
+            buttonShowAnswer.Visible = false;
         }
 
-        private void buttonMarkCorrect_Click(object sender, EventArgs e)
+        private void ButtonMarkCorrect_Click(object sender, EventArgs e)
         {
-            xMLFunctions.markAnswerCorrect();
+            xMLFunctions.MarkAnswerCorrect();
             labelResult.Text = "Answer Marked Correct";
+            ShowCurrentQuestion();
         }
 
-        private void buttonMarkIncorrect_Click(object sender, EventArgs e)
+        private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
         {
-            xMLFunctions.markAnswerIncorrect();
+            xMLFunctions.MarkAnswerIncorrect();
 
             labelResult.Text = "Answer Marked Incorrect";
+            ShowCurrentQuestion();
         }
 
-        private void buttonShowWrong_Click(object sender, EventArgs e)
+        private void ShowFirstQuestion()
+        {
+            xMLFunctions.ResetQuestionIndex();
+            ShowCurrentQuestion();
+        }
+
+        private void ShowCurrentQuestion()
+        {
+            labelResult.Text = string.Empty;
+            labelQuestion.Text = string.Empty;
+            textBoxAnswer.Text = string.Empty;
+            labelQuestion.Text = xMLFunctions.GetQuestion(skipPassed);
+            textBoxAnswer.Visible = false;
+            buttonShowAnswer.Visible = true;
+        }
+
+        private void ButtonShowWrong_Click(object sender, EventArgs e)
         {
             if (buttonShowWrong.Text == "Show Wrong")
             {
@@ -223,9 +235,10 @@ namespace StudyFramework1
             }
         }
 
-        private void buttonClearMarks_Click(object sender, EventArgs e)
+        private void ButtonClearMarks_Click(object sender, EventArgs e)
         {
-            xMLFunctions.clearAllMarks();
+            xMLFunctions.ClearAllMarks();
+            ShowFirstQuestion();
         }
     }
 }

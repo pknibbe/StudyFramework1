@@ -64,14 +64,14 @@
             buttonQuestionRemove = new Button();
             buttonAddQuestion = new Button();
             textBoxQuestion = new TextBox();
-            buttonUpdateXml = new Button();
             buttonClearMarks = new Button();
             buttonShowWrong = new Button();
             buttonMarkIncorrect = new Button();
             buttonMarkCorrect = new Button();
-            labelAnswer = new Label();
             buttonShowAnswer = new Button();
             labelQuestion = new Label();
+            panel11 = new Panel();
+            textBoxAnswer = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
             panel7.SuspendLayout();
@@ -86,6 +86,7 @@
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             panel10.SuspendLayout();
+            panel11.SuspendLayout();
             SuspendLayout();
             // 
             // label1
@@ -125,15 +126,17 @@
             tableLayoutPanel1.Controls.Add(tableLayoutPanel3, 0, 1);
             tableLayoutPanel1.Controls.Add(tableLayoutPanel2, 0, 0);
             tableLayoutPanel1.Controls.Add(panel10, 0, 3);
+            tableLayoutPanel1.Controls.Add(panel11, 0, 4);
             tableLayoutPanel1.Dock = DockStyle.Fill;
             tableLayoutPanel1.Location = new Point(0, 0);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 4;
+            tableLayoutPanel1.RowCount = 5;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 102F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 103F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 101F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 37F));
-            tableLayoutPanel1.Size = new Size(751, 450);
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 99F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 149F));
+            tableLayoutPanel1.Size = new Size(751, 561);
             tableLayoutPanel1.TabIndex = 3;
             // 
             // tableLayoutPanel4
@@ -352,6 +355,7 @@
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 39.43162F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 60.5683823F));
             tableLayoutPanel2.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 111F));
+            tableLayoutPanel2.Controls.Add(labelResult, 0, 0);
             tableLayoutPanel2.Controls.Add(panel1, 0, 1);
             tableLayoutPanel2.Controls.Add(panel2, 1, 1);
             tableLayoutPanel2.Controls.Add(label2, 1, 0);
@@ -424,28 +428,20 @@
             // 
             // panel10
             // 
-            panel10.Controls.Add(labelResult);
             panel10.Controls.Add(buttonQuestionRemove);
             panel10.Controls.Add(buttonAddQuestion);
-            panel10.Controls.Add(textBoxQuestion);
-            panel10.Controls.Add(buttonUpdateXml);
-            panel10.Controls.Add(buttonClearMarks);
             panel10.Controls.Add(buttonShowWrong);
-            panel10.Controls.Add(buttonMarkIncorrect);
-            panel10.Controls.Add(buttonMarkCorrect);
-            panel10.Controls.Add(labelAnswer);
-            panel10.Controls.Add(buttonShowAnswer);
-            panel10.Controls.Add(labelQuestion);
+            panel10.Controls.Add(textBoxQuestion);
             panel10.Dock = DockStyle.Fill;
             panel10.Location = new Point(3, 309);
             panel10.Name = "panel10";
-            panel10.Size = new Size(745, 138);
+            panel10.Size = new Size(745, 93);
             panel10.TabIndex = 3;
             // 
             // labelResult
             // 
             labelResult.AutoSize = true;
-            labelResult.Location = new Point(82, 117);
+            labelResult.Location = new Point(3, 0);
             labelResult.Name = "labelResult";
             labelResult.Size = new Size(39, 15);
             labelResult.TabIndex = 11;
@@ -453,116 +449,118 @@
             // 
             // buttonQuestionRemove
             // 
-            buttonQuestionRemove.Location = new Point(444, 9);
+            buttonQuestionRemove.Location = new Point(528, 49);
             buttonQuestionRemove.Name = "buttonQuestionRemove";
             buttonQuestionRemove.Size = new Size(75, 41);
             buttonQuestionRemove.TabIndex = 10;
             buttonQuestionRemove.Text = "Remove Question";
             buttonQuestionRemove.UseVisualStyleBackColor = true;
-            buttonQuestionRemove.Click += buttonQuestionRemove_Click;
+            buttonQuestionRemove.Click += ButtonQuestionRemove_Click;
             // 
             // buttonAddQuestion
             // 
-            buttonAddQuestion.Location = new Point(356, 9);
+            buttonAddQuestion.Location = new Point(528, 3);
             buttonAddQuestion.Name = "buttonAddQuestion";
             buttonAddQuestion.Size = new Size(75, 41);
             buttonAddQuestion.TabIndex = 9;
             buttonAddQuestion.Text = "Add Question";
             buttonAddQuestion.UseVisualStyleBackColor = true;
-            buttonAddQuestion.Click += buttonAddQuestion_Click;
+            buttonAddQuestion.Click += ButtonAddQuestion_Click;
             // 
             // textBoxQuestion
             // 
-            textBoxQuestion.Location = new Point(530, 9);
+            textBoxQuestion.Location = new Point(3, 3);
             textBoxQuestion.Multiline = true;
             textBoxQuestion.Name = "textBoxQuestion";
-            textBoxQuestion.Size = new Size(200, 111);
+            textBoxQuestion.Size = new Size(504, 80);
             textBoxQuestion.TabIndex = 8;
-            // 
-            // buttonUpdateXml
-            // 
-            buttonUpdateXml.Location = new Point(444, 74);
-            buttonUpdateXml.Name = "buttonUpdateXml";
-            buttonUpdateXml.Size = new Size(75, 39);
-            buttonUpdateXml.TabIndex = 7;
-            buttonUpdateXml.Text = "Update Xml";
-            buttonUpdateXml.UseVisualStyleBackColor = true;
-            buttonUpdateXml.Click += ButtonUpdateXml_Click;
             // 
             // buttonClearMarks
             // 
-            buttonClearMarks.Location = new Point(356, 74);
+            buttonClearMarks.Location = new Point(661, 101);
             buttonClearMarks.Name = "buttonClearMarks";
             buttonClearMarks.Size = new Size(75, 39);
             buttonClearMarks.TabIndex = 6;
             buttonClearMarks.Text = "Clear Marks";
             buttonClearMarks.UseVisualStyleBackColor = true;
-            buttonClearMarks.Click += buttonClearMarks_Click;
+            buttonClearMarks.Click += ButtonClearMarks_Click;
             // 
             // buttonShowWrong
             // 
-            buttonShowWrong.Location = new Point(270, 74);
+            buttonShowWrong.Location = new Point(646, 24);
             buttonShowWrong.Name = "buttonShowWrong";
             buttonShowWrong.Size = new Size(75, 39);
             buttonShowWrong.TabIndex = 5;
             buttonShowWrong.Text = "Show Wrong";
             buttonShowWrong.UseVisualStyleBackColor = true;
-            buttonShowWrong.Click += buttonShowWrong_Click;
+            buttonShowWrong.Click += ButtonShowWrong_Click;
             // 
             // buttonMarkIncorrect
             // 
-            buttonMarkIncorrect.Location = new Point(189, 74);
+            buttonMarkIncorrect.Location = new Point(661, 56);
             buttonMarkIncorrect.Name = "buttonMarkIncorrect";
             buttonMarkIncorrect.Size = new Size(75, 39);
             buttonMarkIncorrect.TabIndex = 4;
             buttonMarkIncorrect.Text = "Mark Incorrect";
             buttonMarkIncorrect.UseVisualStyleBackColor = true;
-            buttonMarkIncorrect.Click += buttonMarkIncorrect_Click;
+            buttonMarkIncorrect.Click += ButtonMarkIncorrect_Click;
             // 
             // buttonMarkCorrect
             // 
-            buttonMarkCorrect.Location = new Point(108, 74);
+            buttonMarkCorrect.Location = new Point(661, 9);
             buttonMarkCorrect.Name = "buttonMarkCorrect";
             buttonMarkCorrect.Size = new Size(75, 39);
             buttonMarkCorrect.TabIndex = 3;
             buttonMarkCorrect.Text = "Mark Correct";
             buttonMarkCorrect.UseVisualStyleBackColor = true;
-            buttonMarkCorrect.Click += buttonMarkCorrect_Click;
-            // 
-            // labelAnswer
-            // 
-            labelAnswer.AutoSize = true;
-            labelAnswer.Location = new Point(22, 35);
-            labelAnswer.MaximumSize = new Size(300, 300);
-            labelAnswer.Name = "labelAnswer";
-            labelAnswer.Size = new Size(52, 15);
-            labelAnswer.TabIndex = 2;
-            labelAnswer.Text = "Answer: ";
+            buttonMarkCorrect.Click += ButtonMarkCorrect_Click;
             // 
             // buttonShowAnswer
             // 
-            buttonShowAnswer.Location = new Point(16, 74);
+            buttonShowAnswer.Location = new Point(3, 56);
             buttonShowAnswer.Name = "buttonShowAnswer";
             buttonShowAnswer.Size = new Size(75, 39);
             buttonShowAnswer.TabIndex = 1;
             buttonShowAnswer.Text = "Show Answer";
             buttonShowAnswer.UseVisualStyleBackColor = true;
-            buttonShowAnswer.Click += buttonShowAnswer_Click;
+            buttonShowAnswer.Click += ButtonShowAnswer_Click;
             // 
             // labelQuestion
             // 
             labelQuestion.AutoSize = true;
-            labelQuestion.Location = new Point(16, 9);
+            labelQuestion.Location = new Point(9, 9);
             labelQuestion.Name = "labelQuestion";
             labelQuestion.Size = new Size(58, 15);
             labelQuestion.TabIndex = 0;
             labelQuestion.Text = "Question:";
             // 
+            // panel11
+            // 
+            panel11.Controls.Add(labelQuestion);
+            panel11.Controls.Add(buttonClearMarks);
+            panel11.Controls.Add(buttonShowAnswer);
+            panel11.Controls.Add(buttonMarkIncorrect);
+            panel11.Controls.Add(buttonMarkCorrect);
+            panel11.Controls.Add(textBoxAnswer);
+            panel11.Dock = DockStyle.Fill;
+            panel11.Location = new Point(3, 408);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(745, 150);
+            panel11.TabIndex = 4;
+            // 
+            // textBoxAnswer
+            // 
+            textBoxAnswer.Location = new Point(3, 56);
+            textBoxAnswer.Multiline = true;
+            textBoxAnswer.Name = "textBoxAnswer";
+            textBoxAnswer.Size = new Size(406, 78);
+            textBoxAnswer.TabIndex = 1;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(751, 450);
+            ClientSize = new Size(751, 561);
             Controls.Add(tableLayoutPanel1);
             Name = "Form1";
             Text = "Form1";
@@ -590,6 +588,8 @@
             panel3.ResumeLayout(false);
             panel10.ResumeLayout(false);
             panel10.PerformLayout();
+            panel11.ResumeLayout(false);
+            panel11.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -629,15 +629,15 @@
         private Panel panel10;
         private Button buttonMarkIncorrect;
         private Button buttonMarkCorrect;
-        private Label labelAnswer;
         private Button buttonShowAnswer;
         private Label labelQuestion;
         private Button buttonClearMarks;
         private Button buttonShowWrong;
-        private Button buttonUpdateXml;
         private Button buttonQuestionRemove;
         private Button buttonAddQuestion;
         private TextBox textBoxQuestion;
         private Label labelResult;
+        private Panel panel11;
+        private TextBox textBoxAnswer;
     }
 }
