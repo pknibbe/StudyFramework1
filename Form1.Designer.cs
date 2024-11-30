@@ -533,6 +533,7 @@
             // 
             labelAnswer.AutoSize = true;
             labelAnswer.Location = new Point(22, 35);
+            labelAnswer.MaximumSize = new Size(300, 300);
             labelAnswer.Name = "labelAnswer";
             labelAnswer.Size = new Size(52, 15);
             labelAnswer.TabIndex = 2;

@@ -107,6 +107,7 @@ namespace StudyFramework1
                 return;
             }
             labelResult.Text = "Subtopic Added";
+            labelQuestion.Text = string.Empty;
         }
 
 
@@ -119,9 +120,16 @@ namespace StudyFramework1
                 xMLFunctions.newQuestion = textBoxQuestion.Text;
                 buttonAddQuestion.Text = "Add Answer";
                 labelResult.Text = "Question Added";
+                textBoxQuestion.Text = string.Empty;
             }
-            else xMLFunctions.AddQAG(xMLFunctions.newQuestion, textBoxQuestion.Text);
-            labelResult.Text = "Answer Added";
+            else
+            {
+                xMLFunctions.AddQAG(xMLFunctions.newQuestion, textBoxQuestion.Text);
+                labelResult.Text = "Answer Added";
+                buttonAddQuestion.Text = "Add Question";
+                textBoxQuestion.Text = string.Empty;
+                labelQuestion.Text = xMLFunctions.GetQuestion(skipPassed);
+            }
         }
 
         private void ButtonDeleteSubject_click(object sender, EventArgs e)

@@ -80,7 +80,7 @@ namespace StudyFramework1
         /// <param name="subTopic"></param>
         public void AddSubTopic(string subTopic) 
         {
-            XElement newSubTopicNameElement = new XElement("topicName", subTopic);
+            XElement newSubTopicNameElement = new XElement("subTopicName", subTopic);
             if ((topicElement == null) || topicElement.Descendants("subTopicName").Contains(newSubTopicNameElement)) return;
             subTopicElement = new XElement("subTopic", newSubTopicNameElement);
             topicElement.Add(subTopicElement);
@@ -99,11 +99,13 @@ namespace StudyFramework1
             answerElement = new XElement("answer", answer);
             gradeElement = new XElement("grade", "-1");
             if (subTopicElement.Descendants("question").Contains(questionElement)) return;
+            IEnumerable<XElement> elements = subTopicElement.Descendants("questions");
+            if ((elements == null) || (!elements.Any())) subTopicElement.Add(new XElement("questions"));
+
             foreach (XElement node in subTopicElement.Descendants("questions"))
             {
-                node.Add(new XElement("qaPair", questionElement, answerElement , gradeElement));
+                node?.Add(new XElement("qaPair", questionElement, answerElement, gradeElement));
                 if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
-                return;
             }
         }
 
