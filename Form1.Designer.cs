@@ -53,6 +53,7 @@
             panel6 = new Panel();
             buttonDeleteTopic = new Button();
             tableLayoutPanel2 = new TableLayoutPanel();
+            labelResult = new Label();
             panel1 = new Panel();
             panel2 = new Panel();
             textBoxSubject = new TextBox();
@@ -60,17 +61,18 @@
             panel3 = new Panel();
             buttonDeleteSubject = new Button();
             panel10 = new Panel();
-            labelResult = new Label();
+            buttonEditAnswer = new Button();
+            buttonEditQuestion = new Button();
             buttonQuestionRemove = new Button();
             buttonAddQuestion = new Button();
             textBoxQuestion = new TextBox();
+            panel11 = new Panel();
+            labelQuestion = new Label();
             buttonClearMarks = new Button();
+            buttonShowAnswer = new Button();
             buttonShowWrong = new Button();
             buttonMarkIncorrect = new Button();
             buttonMarkCorrect = new Button();
-            buttonShowAnswer = new Button();
-            labelQuestion = new Label();
-            panel11 = new Panel();
             textBoxAnswer = new TextBox();
             tableLayoutPanel1.SuspendLayout();
             tableLayoutPanel4.SuspendLayout();
@@ -370,6 +372,15 @@
             tableLayoutPanel2.Size = new Size(745, 96);
             tableLayoutPanel2.TabIndex = 0;
             // 
+            // labelResult
+            // 
+            labelResult.AutoSize = true;
+            labelResult.Location = new Point(3, 0);
+            labelResult.Name = "labelResult";
+            labelResult.Size = new Size(39, 15);
+            labelResult.TabIndex = 11;
+            labelResult.Text = "Result";
+            // 
             // panel1
             // 
             panel1.Controls.Add(comboBoxSubject);
@@ -430,7 +441,6 @@
             // 
             panel10.Controls.Add(buttonQuestionRemove);
             panel10.Controls.Add(buttonAddQuestion);
-            panel10.Controls.Add(buttonShowWrong);
             panel10.Controls.Add(textBoxQuestion);
             panel10.Dock = DockStyle.Fill;
             panel10.Location = new Point(3, 309);
@@ -438,14 +448,25 @@
             panel10.Size = new Size(745, 93);
             panel10.TabIndex = 3;
             // 
-            // labelResult
+            // buttonEditAnswer
             // 
-            labelResult.AutoSize = true;
-            labelResult.Location = new Point(3, 0);
-            labelResult.Name = "labelResult";
-            labelResult.Size = new Size(39, 15);
-            labelResult.TabIndex = 11;
-            labelResult.Text = "Result";
+            buttonEditAnswer.Location = new Point(580, 100);
+            buttonEditAnswer.Name = "buttonEditAnswer";
+            buttonEditAnswer.Size = new Size(75, 40);
+            buttonEditAnswer.TabIndex = 12;
+            buttonEditAnswer.Text = "Edit Answer";
+            buttonEditAnswer.UseVisualStyleBackColor = true;
+            buttonEditAnswer.Click += ButtonEditAnswer_Click;
+            // 
+            // buttonEditQuestion
+            // 
+            buttonEditQuestion.Location = new Point(580, 56);
+            buttonEditQuestion.Name = "buttonEditQuestion";
+            buttonEditQuestion.Size = new Size(75, 41);
+            buttonEditQuestion.TabIndex = 11;
+            buttonEditQuestion.Text = "Edit Question";
+            buttonEditQuestion.UseVisualStyleBackColor = true;
+            buttonEditQuestion.Click += ButtonEditQuestion_Click;
             // 
             // buttonQuestionRemove
             // 
@@ -475,6 +496,32 @@
             textBoxQuestion.Size = new Size(504, 80);
             textBoxQuestion.TabIndex = 8;
             // 
+            // panel11
+            // 
+            panel11.Controls.Add(buttonEditAnswer);
+            panel11.Controls.Add(labelQuestion);
+            panel11.Controls.Add(buttonEditQuestion);
+            panel11.Controls.Add(buttonClearMarks);
+            panel11.Controls.Add(buttonShowAnswer);
+            panel11.Controls.Add(buttonShowWrong);
+            panel11.Controls.Add(buttonMarkIncorrect);
+            panel11.Controls.Add(buttonMarkCorrect);
+            panel11.Controls.Add(textBoxAnswer);
+            panel11.Dock = DockStyle.Fill;
+            panel11.Location = new Point(3, 408);
+            panel11.Name = "panel11";
+            panel11.Size = new Size(745, 150);
+            panel11.TabIndex = 4;
+            // 
+            // labelQuestion
+            // 
+            labelQuestion.AutoSize = true;
+            labelQuestion.Location = new Point(9, 9);
+            labelQuestion.Name = "labelQuestion";
+            labelQuestion.Size = new Size(58, 15);
+            labelQuestion.TabIndex = 0;
+            labelQuestion.Text = "Question:";
+            // 
             // buttonClearMarks
             // 
             buttonClearMarks.Location = new Point(661, 101);
@@ -485,9 +532,19 @@
             buttonClearMarks.UseVisualStyleBackColor = true;
             buttonClearMarks.Click += ButtonClearMarks_Click;
             // 
+            // buttonShowAnswer
+            // 
+            buttonShowAnswer.Location = new Point(3, 56);
+            buttonShowAnswer.Name = "buttonShowAnswer";
+            buttonShowAnswer.Size = new Size(75, 39);
+            buttonShowAnswer.TabIndex = 1;
+            buttonShowAnswer.Text = "Show Answer";
+            buttonShowAnswer.UseVisualStyleBackColor = true;
+            buttonShowAnswer.Click += ButtonShowAnswer_Click;
+            // 
             // buttonShowWrong
             // 
-            buttonShowWrong.Location = new Point(646, 24);
+            buttonShowWrong.Location = new Point(580, 9);
             buttonShowWrong.Name = "buttonShowWrong";
             buttonShowWrong.Size = new Size(75, 39);
             buttonShowWrong.TabIndex = 5;
@@ -514,39 +571,6 @@
             buttonMarkCorrect.Text = "Mark Correct";
             buttonMarkCorrect.UseVisualStyleBackColor = true;
             buttonMarkCorrect.Click += ButtonMarkCorrect_Click;
-            // 
-            // buttonShowAnswer
-            // 
-            buttonShowAnswer.Location = new Point(3, 56);
-            buttonShowAnswer.Name = "buttonShowAnswer";
-            buttonShowAnswer.Size = new Size(75, 39);
-            buttonShowAnswer.TabIndex = 1;
-            buttonShowAnswer.Text = "Show Answer";
-            buttonShowAnswer.UseVisualStyleBackColor = true;
-            buttonShowAnswer.Click += ButtonShowAnswer_Click;
-            // 
-            // labelQuestion
-            // 
-            labelQuestion.AutoSize = true;
-            labelQuestion.Location = new Point(9, 9);
-            labelQuestion.Name = "labelQuestion";
-            labelQuestion.Size = new Size(58, 15);
-            labelQuestion.TabIndex = 0;
-            labelQuestion.Text = "Question:";
-            // 
-            // panel11
-            // 
-            panel11.Controls.Add(labelQuestion);
-            panel11.Controls.Add(buttonClearMarks);
-            panel11.Controls.Add(buttonShowAnswer);
-            panel11.Controls.Add(buttonMarkIncorrect);
-            panel11.Controls.Add(buttonMarkCorrect);
-            panel11.Controls.Add(textBoxAnswer);
-            panel11.Dock = DockStyle.Fill;
-            panel11.Location = new Point(3, 408);
-            panel11.Name = "panel11";
-            panel11.Size = new Size(745, 150);
-            panel11.TabIndex = 4;
             // 
             // textBoxAnswer
             // 
@@ -639,5 +663,7 @@
         private Label labelResult;
         private Panel panel11;
         private TextBox textBoxAnswer;
+        private Button buttonEditAnswer;
+        private Button buttonEditQuestion;
     }
 }

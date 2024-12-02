@@ -121,6 +121,8 @@ namespace StudyFramework1
                 buttonAddQuestion.Text = "Add Answer";
                 labelResult.Text = "Question Added";
                 textBoxQuestion.Text = string.Empty;
+                buttonEditAnswer.Visible = false;
+                buttonEditQuestion.Visible = false;
             }
             else
             {
@@ -129,6 +131,8 @@ namespace StudyFramework1
                 buttonAddQuestion.Text = "Add Question";
                 textBoxQuestion.Text = string.Empty;
                 labelQuestion.Text = xMLFunctions.GetQuestion(skipPassed);
+                buttonEditAnswer.Visible = true;
+                buttonEditQuestion.Visible = true;
             }
         }
 
@@ -239,6 +243,32 @@ namespace StudyFramework1
         {
             xMLFunctions.ClearAllMarks();
             ShowFirstQuestion();
+        }
+
+        private void ButtonEditQuestion_Click(object sender, EventArgs e)
+        {
+            if (buttonEditQuestion.Text.Contains("dit"))
+            {
+                textBoxQuestion.Text = String.Empty;
+                buttonEditQuestion.Text = "Save Question";
+            }
+            else {
+                xMLFunctions.UpdateQuestionText(textBoxQuestion.Text);
+            }
+        }
+
+        private void ButtonEditAnswer_Click(object sender, EventArgs e)
+        {
+            if (buttonEditAnswer.Text.Contains("dit"))
+            {
+                textBoxQuestion.Text = String.Empty;
+                buttonEditAnswer.Text = "Save Answer";
+            }
+            else
+            {
+                xMLFunctions.UpdateAnswerText(textBoxQuestion.Text);
+            }
+
         }
     }
 }

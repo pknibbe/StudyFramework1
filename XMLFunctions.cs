@@ -81,7 +81,7 @@ namespace StudyFramework1
         {
             XElement newSubTopicNameElement = new("subTopicName", subTopic);
             if ((topicElement == null) || topicElement.Descendants("subTopicName").Contains(newSubTopicNameElement)) return;
-            subTopicElement = new XElement("subTopic", newSubTopicNameElement);
+            subTopicElement = new XElement("subtopic", newSubTopicNameElement);
             topicElement.Add(subTopicElement);
             if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
@@ -294,6 +294,28 @@ namespace StudyFramework1
 
         public void ResetQuestionIndex()
             { questionIndex = 0; }
+
+        public void UpdateQuestionText(string text)
+        {
+            if (qaElement == null) return;
+
+            questionElement?.Remove();
+            questionElement = new XElement("question", text);
+
+            qaElement.Add(questionElement);
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+        }
+
+        public void UpdateAnswerText(string text)
+        {
+            if (qaElement == null) return;
+
+            answerElement?.Remove();
+            answerElement = new XElement("answer", text);
+
+            qaElement.Add(answerElement);
+            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+        }
 
         private void AddQAGElements()
         {
