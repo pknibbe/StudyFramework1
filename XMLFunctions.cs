@@ -12,72 +12,101 @@ namespace StudyFramework1
 {
     internal class XMLFunctions
     {
-        static readonly string rootPath = "D:\\repos/C#/StudyFramework1/XML/";
-        static readonly string subjectFileExtension = ".xml";
-        readonly List<string> subjects = [];
-        XDocument? subjectXml;
-        XElement? subjectElement;
-        string? subjectName;
-        XElement? topicElement;
-        XElement? subTopicElement;
-        XElement? questionElement = null;
-        XElement? answerElement = null;
-        XElement? gradeElement = null;
-        XElement? qaElement;
-        int questionIndex = 0; 
-        public string newQuestion = string.Empty;
-        string currentAnswer = string.Empty;
-        bool? currentGrade = null;
+        // block of variables used in current version of functions
+        int questionIndex = 0;
+        XDocument? subTopicDoc;
+        IEnumerable<XElement>? questionAnswerGroups;
+        string? currentSubTopicXMLPath;
+        string? currentQuestion;
+        string? currentAnswer;
+        bool? currentGrade;
+        // end of block of current variables
+
+        /*        XDocument? subjectXml;
+                XElement? subjectElement;
+                string? subjectName;
+
+                readonly List<XElement> topics = [];
+                XElement? topicElement;
+                string? topicName;
+
+                readonly List<XElement> subTopics = [];
+                XElement? subTopicElement;
+                string? subTopicName;*/
+
+
+
+        /*        static readonly string rootPath = "D:\\repos/C#/StudyFramework1/XML/";
+                static readonly string subjectFileExtension = ".xml";
+                static readonly string separator = "/";
+                readonly List<string> subjects = [];
+                string? subjectDirectoryPath;
+                string? topicDirectoryPath;
+                string? subTopicDirectoryPath;
+                XElement? questionElement = null;
+                XElement? answerElement = null;
+                XElement? gradeElement = null;
+                XElement? qaElement;
+                public string newQuestion = string.Empty;
+                string currentAnswer = string.Empty;
+                bool? currentGrade = null;*/
 
         /// <summary>
-        /// Reads the xml directory and extracts the top-level subject names from the xml file names
+        /// Uses the xmlPath to load the xml if it differs from the current path. 
+        /// Looks up the current question based on index and whether the user wants to skip questions that have already been marked as answered correctly
         /// </summary>
-        /// <returns>The names of the top-level subjects</returns>
-        public List<string> InitializeDoc()
+        /// <param name="xmlPath"></param>
+        /// <param name="skipPassed"></param>
+        /// <returns>The text of the current question</returns>
+        public string GetCurrentQuestion(string xmlPath, bool skipPassed)
         {
-            foreach (string filePath in Directory.GetFiles(rootPath, "*" + subjectFileExtension)) 
-                if (!string.IsNullOrEmpty(filePath)) subjects.Add( Path.GetFileNameWithoutExtension(filePath));
-
-            return subjects;
-        }
-
-        /// <summary>
-        /// Creates a new subject xml document if it doesn't already exist
-        /// </summary>
-        /// <param name="subject"></param>
-        public void AddSubject(string subject)
-        {
-            if (File.Exists(rootPath + subject + subjectFileExtension))
+            string retVal = "Unable to find the current question.";
+            if ((string.IsNullOrEmpty(currentSubTopicXMLPath)) || !(currentSubTopicXMLPath == xmlPath))
             {
-                //labelResult.Text = subject + " already exists";
-                return;
+                subTopicDoc = XDocument.Load(xmlPath);
+                questionAnswerGroups = subTopicDoc.Descendants("qaPair");
+                currentSubTopicXMLPath = xmlPath;
             }
-            subjectElement = new XElement("subject", new XElement("subjectName", subject));
-            subjectXml = new XDocument(subjectElement);
-            subjects?.Add( subject);
-            subjectName = subject;
-            UpdateXMLFile(subjectName);
+
+            int currentIndex = 0;
+            if (questionAnswerGroups == null) return retVal;
+            foreach (XElement qap in questionAnswerGroups)
+            {
+                if (skipPassed && QuestionIsPassed(qap)) continue;
+                if (questionIndex == currentIndex++)
+                {
+                    foreach (XElement question in qap.Descendants("question")) currentQuestion = question.Value;
+                    foreach (XElement answer in qap.Descendants("answer")) currentAnswer = answer.Value;
+                    foreach (XElement grade in qap.Descendants("grade")) currentGrade = QuestionIsPassed(grade);
+
+                    if (string.IsNullOrEmpty(currentQuestion)) return string.Empty;
+                    return currentQuestion;
+                }                
+            }
+            return retVal;
         }
 
-        /// <summary>
-        /// Add a major topic to the current subject xml
-        /// </summary>
-        /// <param name="topic"></param>
-        public void AddTopic(string topic) 
+        public void AddSubTopic(string subTopicName, string subTopicDirectoryPath)
         {
-            XElement newTopicNameElement = new("topicName", topic);
-            if ((subjectElement == null) || subjectElement.Descendants("topicName").Contains(newTopicNameElement)) return;
-            topicElement = new XElement("topic", newTopicNameElement);
-            subjectElement.Add(topicElement);
-            subTopicElement = null;
-            if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
+            subTopicDoc = new XDocument(new XElement("subTopicName", subTopicName));
+            subTopicDoc.Save(subTopicDirectoryPath);
+            currentSubTopicXMLPath = subTopicDirectoryPath;
+            questionIndex = 0;
         }
+
+        private static bool QuestionIsPassed(XElement qap)
+        {
+            foreach (XElement grade in qap.Descendants("grade")) return (grade.Value == "1");
+            return false;
+        }
+
+        // Functions below this point are based on an older way of managing the information in subject-wide xml files.
 
         /// <summary>
         /// Add a minor topic to the current major topic in the subject xml
         /// </summary>
         /// <param name="subTopic"></param>
-        public void AddSubTopic(string subTopic) 
+ /*       public void AddSubTopic(string subTopic) 
         {
             XElement newSubTopicNameElement = new("subTopicName", subTopic);
             if ((topicElement == null) || topicElement.Descendants("subTopicName").Contains(newSubTopicNameElement)) return;
@@ -106,23 +135,11 @@ namespace StudyFramework1
         /// <returns>The names of the topics within the subject</returns>
         public Collection<string> UpdateSelectedSubject(int selectedIndex)
         {
-            if (subjects == null) return [];
+            if ((subjects == null) || (subjects.Count <= selectedIndex)) return [];
             subjectName = subjects[selectedIndex];
+            subjectDirectoryPath = rootPath + "/" + subjectName;
 
-            Collection<string> items = [];
-            if (!File.Exists(rootPath + subjects[selectedIndex] + subjectFileExtension)) return items;
-            subjectXml = XDocument.Load(rootPath + subjects[selectedIndex] + subjectFileExtension);
-
-            foreach (XElement node in subjectXml.Descendants("subject")) subjectElement = node;
-
-            if (subjectElement == null)  return items; 
-
-            foreach (XElement descTopicElement in subjectElement.Descendants("topicName"))
-            {
-                items.Add(descTopicElement.Value);
-            }
-
-            return items;
+            return GetTopicsFromSubjectXMLFile(selectedIndex);
         }
 
         /// <summary>
@@ -130,29 +147,27 @@ namespace StudyFramework1
         /// </summary>
         /// <param name="selectedIndex"></param>
         /// <returns>The names of the minor topics within the major topic</returns>
-        public Collection<string> UpdateSelectedTopic(int selectedIndex)
-        {
-            Collection<string> items = [];
-            topicElement = GetTopicNode(selectedIndex);
-            if (topicElement == null) { return items; }
+        //public Collection<string> UpdateSelectedTopic(int selectedIndex)
+        //{
+        //    Collection<string> items = [];
+        //    topicElement = GetTopicNode(selectedIndex);
+        //    if (topics.Count > selectedIndex) topicName = topics[selectedIndex];
+        //    subjectDirectoryPath = rootPath + "/" + subjectName;
+        //    topicDirectoryPath = subjectDirectoryPath + "/" + topicName;
 
-            foreach (XElement descElement in topicElement.Descendants("subTopicName"))
-            {
-                items.Add(descElement.Value);
-            }
-
-            return items;
-        }
+        //    return GetSubTopicsFromTopicXElement();
+        //}
 
         /// <summary>
         /// Loads the current minor topic from the major topic. Does not preload the questions as only one at a time will be displayed
         /// </summary>
         /// <param name="selectedIndex"></param>
-        public void UpdateSelectedSubtopic(int selectedIndex)
-        {
-            subTopicElement = GetSubTopicNode(selectedIndex);
-            questionIndex = 0;
-        }
+        //public void UpdateSelectedSubtopic(int selectedIndex)
+        //{
+        //    subTopicElement = GetSubTopicNode(selectedIndex);
+        //    if (subTopics.Count > selectedIndex) subTopicName = subTopics[selectedIndex];
+        //    questionIndex = 0;
+        //}
 
         /// <summary>
         /// Gets the current question, counting only unpassed questions if skipPassed.
@@ -317,6 +332,50 @@ namespace StudyFramework1
             if (!string.IsNullOrEmpty(subjectName)) UpdateXMLFile(subjectName);
         }
 
+        private void SaveSubTopic(XElement subTopic)
+        {
+            if (string.IsNullOrEmpty(subTopic.Value)) return;
+            subTopicDoc = new XDocument();
+            subTopicDoc.Add(subTopic);
+            foreach (XElement topic in subTopic.Descendants("subTopicName")) subTopicName = topic.Value;
+            subTopicDoc.Save(rootPath + subjectName + separator + topicName + separator + subTopicName + subjectFileExtension);
+        }
+
+        private Collection<string> GetTopicsFromSubjectXMLFile(int selectedIndex)
+        {
+            Collection<string> items = [];
+            topics.Clear();
+            if (!File.Exists(rootPath + subjectName + subjectFileExtension)) return items;
+            subjectXml = XDocument.Load(rootPath + subjects[selectedIndex] + subjectFileExtension);
+
+            foreach (XElement node in subjectXml.Descendants("subject")) subjectElement = node;
+
+            if (subjectElement == null) return items;
+
+            foreach (XElement descTopicElement in subjectElement.Descendants("topicName"))
+            {
+                topics.Add(descTopicElement);
+                items.Add(descTopicElement.Value);
+            }
+
+            return items;
+        }
+
+        private Collection<string> GetSubTopicsFromTopicXElement()
+        {
+            Collection<string> items = [];
+            subTopics.Clear();
+            if ((!Directory.Exists(topicDirectoryPath)) || (topicElement == null)) return items;
+            foreach (XElement stElement in topicElement.Descendants("subTopicName"))
+            {
+                subTopicDirectoryPath = topicDirectoryPath + "/" + stElement.Value;
+                if (!Directory.Exists(subTopicDirectoryPath)) Directory.CreateDirectory(subTopicDirectoryPath);
+                subTopics.Add(stElement);
+                items.Add(stElement.Value);
+            }
+            return items;
+        }
+
         private void AddQAGElements()
         {
             if (subTopicElement == null) return;
@@ -363,6 +422,6 @@ namespace StudyFramework1
                 }
             }
             return null;
-        }
+        }*/
     }
 }

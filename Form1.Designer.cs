@@ -61,13 +61,13 @@
             panel3 = new Panel();
             buttonDeleteSubject = new Button();
             panel10 = new Panel();
-            buttonEditAnswer = new Button();
-            buttonEditQuestion = new Button();
             buttonQuestionRemove = new Button();
             buttonAddQuestion = new Button();
             textBoxQuestion = new TextBox();
             panel11 = new Panel();
+            buttonEditAnswer = new Button();
             labelQuestion = new Label();
+            buttonEditQuestion = new Button();
             buttonClearMarks = new Button();
             buttonShowAnswer = new Button();
             buttonShowWrong = new Button();
@@ -439,7 +439,6 @@
             // 
             // panel10
             // 
-            panel10.Controls.Add(buttonQuestionRemove);
             panel10.Controls.Add(buttonAddQuestion);
             panel10.Controls.Add(textBoxQuestion);
             panel10.Dock = DockStyle.Fill;
@@ -448,29 +447,9 @@
             panel10.Size = new Size(745, 93);
             panel10.TabIndex = 3;
             // 
-            // buttonEditAnswer
-            // 
-            buttonEditAnswer.Location = new Point(580, 100);
-            buttonEditAnswer.Name = "buttonEditAnswer";
-            buttonEditAnswer.Size = new Size(75, 40);
-            buttonEditAnswer.TabIndex = 12;
-            buttonEditAnswer.Text = "Edit Answer";
-            buttonEditAnswer.UseVisualStyleBackColor = true;
-            buttonEditAnswer.Click += ButtonEditAnswer_Click;
-            // 
-            // buttonEditQuestion
-            // 
-            buttonEditQuestion.Location = new Point(580, 56);
-            buttonEditQuestion.Name = "buttonEditQuestion";
-            buttonEditQuestion.Size = new Size(75, 41);
-            buttonEditQuestion.TabIndex = 11;
-            buttonEditQuestion.Text = "Edit Question";
-            buttonEditQuestion.UseVisualStyleBackColor = true;
-            buttonEditQuestion.Click += ButtonEditQuestion_Click;
-            // 
             // buttonQuestionRemove
             // 
-            buttonQuestionRemove.Location = new Point(528, 49);
+            buttonQuestionRemove.Location = new Point(499, 9);
             buttonQuestionRemove.Name = "buttonQuestionRemove";
             buttonQuestionRemove.Size = new Size(75, 41);
             buttonQuestionRemove.TabIndex = 10;
@@ -480,7 +459,7 @@
             // 
             // buttonAddQuestion
             // 
-            buttonAddQuestion.Location = new Point(528, 3);
+            buttonAddQuestion.Location = new Point(655, 0);
             buttonAddQuestion.Name = "buttonAddQuestion";
             buttonAddQuestion.Size = new Size(75, 41);
             buttonAddQuestion.TabIndex = 9;
@@ -493,11 +472,12 @@
             textBoxQuestion.Location = new Point(3, 3);
             textBoxQuestion.Multiline = true;
             textBoxQuestion.Name = "textBoxQuestion";
-            textBoxQuestion.Size = new Size(504, 80);
+            textBoxQuestion.Size = new Size(627, 80);
             textBoxQuestion.TabIndex = 8;
             // 
             // panel11
             // 
+            panel11.Controls.Add(buttonQuestionRemove);
             panel11.Controls.Add(buttonEditAnswer);
             panel11.Controls.Add(labelQuestion);
             panel11.Controls.Add(buttonEditQuestion);
@@ -513,6 +493,16 @@
             panel11.Size = new Size(745, 150);
             panel11.TabIndex = 4;
             // 
+            // buttonEditAnswer
+            // 
+            buttonEditAnswer.Location = new Point(580, 100);
+            buttonEditAnswer.Name = "buttonEditAnswer";
+            buttonEditAnswer.Size = new Size(75, 40);
+            buttonEditAnswer.TabIndex = 12;
+            buttonEditAnswer.Text = "Edit Answer";
+            buttonEditAnswer.UseVisualStyleBackColor = true;
+            buttonEditAnswer.Click += ButtonEditAnswer_Click;
+            // 
             // labelQuestion
             // 
             labelQuestion.AutoSize = true;
@@ -521,6 +511,16 @@
             labelQuestion.Size = new Size(58, 15);
             labelQuestion.TabIndex = 0;
             labelQuestion.Text = "Question:";
+            // 
+            // buttonEditQuestion
+            // 
+            buttonEditQuestion.Location = new Point(580, 56);
+            buttonEditQuestion.Name = "buttonEditQuestion";
+            buttonEditQuestion.Size = new Size(75, 41);
+            buttonEditQuestion.TabIndex = 11;
+            buttonEditQuestion.Text = "Edit Question";
+            buttonEditQuestion.UseVisualStyleBackColor = true;
+            buttonEditQuestion.Click += ButtonEditQuestion_Click;
             // 
             // buttonClearMarks
             // 
