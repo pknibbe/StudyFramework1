@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,6 @@ namespace StudyFramework1
     {
         private readonly string rootPath = rootPath;
         private readonly string fileExtension = fileExtension;
-        private readonly string pathSeparator = "/";
 
         public List<string> GetSubjects()
         {
@@ -48,7 +48,6 @@ namespace StudyFramework1
 
         public string GetSubTopicFilePath(string subjectName, string topicName, string subTopicName)
         {
-            string retVal = Path.Combine(rootPath, subjectName, subTopicName + fileExtension);
             return Path.Combine(rootPath, subjectName, topicName, subTopicName + fileExtension);
         }
 
@@ -76,6 +75,24 @@ namespace StudyFramework1
         {
             string directoryPath = Path.Combine(rootPath, subjectName, topicName);
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+        }
+
+        public void RemoveSubject(string subjectName)
+        {
+            string directoryPath = Path.Combine(rootPath + subjectName);
+            if (Directory.Exists(directoryPath)) Directory.Delete(directoryPath, true);
+        }
+
+        public void RemoveTopic(string subjectName, string topicName)
+        {
+            string directoryPath = Path.Combine(rootPath, subjectName, topicName);
+            if (Directory.Exists(directoryPath)) Directory.Delete(directoryPath, true);
+        }
+
+        public void RemoveSubTopic(string subjectName, string topicName, string subTopicName)
+        {
+            string filePath = Path.Combine(rootPath, subjectName, topicName, subTopicName + fileExtension);
+            if (File.Exists(filePath)) File.Delete(filePath);
         }
 
 

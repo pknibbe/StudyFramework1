@@ -15,6 +15,7 @@ namespace StudyFramework1
         readonly DirectoryData dataSource = new("D:\\repos/C#/StudyFramework1/XML/", ".xml");
         readonly XMLFunctions functions = new();
 
+        // Getters //
         public List<string> GetStudySubjects() { return dataSource.GetSubjects(); }
         public List<string> GetSubjectTopics(string subjectName)
         {
@@ -30,7 +31,12 @@ namespace StudyFramework1
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
             return functions.GetCurrentQuestion(xmlPath, skipPassed);
         }
+        public string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            return functions.GetCurrentAnswer(dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName), questionText); 
+        }
 
+        // Creators //
         public void AddSubject(string subjectName)
         { dataSource.AddSubject(subjectName); }
 
@@ -50,24 +56,58 @@ namespace StudyFramework1
         }
 
         public void AddQAG(string question, string answer, string subjectName, string topicName, string subTopicName) 
-        { 
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.AddQAG(xmlPath, question, answer);
         }
 
-        public string GetQuestion(bool skipPassed) { return "Placeholder question"; }
+        // Deleters //
+        public void RemoveSubject(string subjectName) 
+        { dataSource.RemoveSubject(subjectName); }
 
-        public void RemoveSubject(string subjectName) { }
+        public void RemoveTopic(string subjectName, string topicName)
+        { dataSource.RemoveTopic(subjectName, topicName); }
+        public void RemoveSubTopic(string subjectName, string topicName, string subTopicName)
+        {
+            dataSource.RemoveSubTopic(subjectName, topicName, subTopicName);
+            functions.RemoveSubTopic();
+        }
+        public void RemoveQAG(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.RemoveQAG(xmlPath, questionText);
+        }
 
-        public void RemoveTopic(string subjectName, string topicName) { }
-        public void RemoveSubTopic(string subjectName, string topicName, string subTopicName) { }
-        public void RemoveQuestion(string subjectName, string topicName, string subTopicName, string questionText) { }
-
-        public string GetAnswer(string questionText) { return "Placeholder answer"; }
-        public void MarkAnswerCorrect(string questionText) { }
-        public void MarkAnswerIncorrect(string questionText) { }
-        public void ResetQuestionIndex() { }
-        public void ClearAllMarks() { }
-        public void UpdateQuestionText(string questionText) { }
-        public void UpdateAnswerText(string answerText) { }
+        // Updaters //
+        public void MarkAnswerCorrect(string subjectName, string topicName, string subTopicName, string questionText) 
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.MarkAnswerCorrect(xmlPath, questionText);
+        }
+        public void MarkAnswerIncorrect(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.MarkAnswerIncorrect(xmlPath, questionText);
+        }
+        public void ResetQuestionIndex()
+        {
+            functions.ResetQuestionIndex();
+        }
+        public void ClearAllMarks(string subjectName, string topicName, string subTopicName)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.ClearAllMarks(xmlPath);
+        }
+        public void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.UpdateQuestionText(xmlPath, questionText, answerText);
+        }
+        public void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            functions.UpdateAnswerText(xmlPath, questionText, answerText);
+        }
 
     }
 }

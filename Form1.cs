@@ -135,7 +135,7 @@ namespace StudyFramework1
                 labelResult.Text = "Answer Added";
                 buttonAddQuestion.Text = "Add Question";
                 textBoxQuestion.Text = string.Empty;
-                labelQuestion.Text = studyContent.GetQuestion(skipPassed);
+                labelQuestion.Text = studyContent.GetCurrentQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, skipPassed);
                 buttonEditAnswer.Visible = true;
                 buttonEditQuestion.Visible = true;
             }
@@ -184,7 +184,7 @@ namespace StudyFramework1
 
         private void ButtonQuestionRemove_Click(object sender, EventArgs e)
         {
-            studyContent.RemoveQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
+            studyContent.RemoveQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
         }
 
         /// <summary>
@@ -194,21 +194,21 @@ namespace StudyFramework1
         /// <param name="e"></param>
         private void ButtonShowAnswer_Click(object sender, EventArgs e)
         {
-            textBoxAnswer.Text = studyContent.GetAnswer(labelQuestion.Text);
+            textBoxAnswer.Text = studyContent.GetCurrentAnswer(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
             textBoxAnswer.Visible = true;
             buttonShowAnswer.Visible = false;
         }
 
         private void ButtonMarkCorrect_Click(object sender, EventArgs e)
         {
-            studyContent.MarkAnswerCorrect(labelQuestion.Text);
+            studyContent.MarkAnswerCorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
             labelResult.Text = "Answer Marked Correct";
             ShowCurrentQuestion();
         }
 
         private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
         {
-            studyContent.MarkAnswerIncorrect(labelQuestion.Text);
+            studyContent.MarkAnswerIncorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
 
             labelResult.Text = "Answer Marked Incorrect";
             ShowCurrentQuestion();
@@ -225,7 +225,7 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             labelQuestion.Text = string.Empty;
             textBoxAnswer.Text = string.Empty;
-            labelQuestion.Text = studyContent.GetQuestion(skipPassed);
+            labelQuestion.Text = studyContent.GetCurrentQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, skipPassed);
             textBoxAnswer.Visible = false;
             buttonShowAnswer.Visible = true;
         }
@@ -246,7 +246,7 @@ namespace StudyFramework1
 
         private void ButtonClearMarks_Click(object sender, EventArgs e)
         {
-            studyContent.ClearAllMarks();
+            studyContent.ClearAllMarks(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text);
             ShowFirstQuestion();
         }
 
@@ -258,7 +258,7 @@ namespace StudyFramework1
                 buttonEditQuestion.Text = "Save Question";
             }
             else {
-                studyContent.UpdateQuestionText(textBoxQuestion.Text);
+                studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxAnswer.Text);
             }
         }
 
@@ -271,7 +271,7 @@ namespace StudyFramework1
             }
             else
             {
-                studyContent.UpdateAnswerText(textBoxQuestion.Text);
+                studyContent.UpdateAnswerText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxAnswer.Text);
             }
 
         }
