@@ -129,7 +129,7 @@ namespace StudyFramework1
             else
             {
                 if (!string.IsNullOrEmpty(newQuestion)) 
-                    studyContent.AddQAG(newQuestion, textBoxQuestion.Text, comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text);
+                    studyContent.AddQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, newQuestion, textBoxQuestion.Text);
 
                 labelResult.Text = "Answer Added";
                 buttonAddQuestion.Text = "Add Question";
