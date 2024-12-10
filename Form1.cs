@@ -196,13 +196,17 @@ namespace StudyFramework1
             textBoxAnswer.Text = studyContent.GetCurrentAnswer(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
             textBoxAnswer.Visible = true;
             buttonShowAnswer.Visible = false;
+            buttonEditQuestion.Visible = true;
         }
 
         private void ButtonMarkCorrect_Click(object sender, EventArgs e)
         {
             studyContent.MarkAnswerCorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
             labelResult.Text = "Answer Marked Correct";
+            studyContent.IncrementQuestionIndex();
             ShowCurrentQuestion();
+            buttonEditQuestion.Visible = false;
+
         }
 
         private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
@@ -210,7 +214,9 @@ namespace StudyFramework1
             studyContent.MarkAnswerIncorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
 
             labelResult.Text = "Answer Marked Incorrect";
+            studyContent.IncrementQuestionIndex();
             ShowCurrentQuestion();
+            buttonEditQuestion.Visible = false;
         }
 
         private void ShowFirstQuestion()
@@ -251,13 +257,18 @@ namespace StudyFramework1
 
         private void ButtonEditQuestion_Click(object sender, EventArgs e)
         {
+            labelResult.Text = string.Empty;
             if (buttonEditQuestion.Text.Contains("dit"))
             {
-                textBoxQuestion.Text = String.Empty;
+                textBoxQuestion.Text = labelQuestion.Text;
                 buttonEditQuestion.Text = "Save Question";
             }
             else {
-                studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxAnswer.Text);
+                studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxQuestion.Text);
+                buttonEditQuestion.Text = "Edit Question";
+                labelResult.Text = "Question text updated";
+                labelQuestion.Text = textBoxQuestion.Text;
+                textBoxQuestion.Text = string.Empty;
             }
         }
 

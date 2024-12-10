@@ -82,6 +82,8 @@ namespace StudyFramework1
             return retVal;
         }
 
+        public void IncrementQuestionIndex() { questionIndex++; }
+
         public string GetCurrentAnswer(string xmlPath, string questionText)
         {
             string retVal = "Unable to find the current answer.";
@@ -186,15 +188,14 @@ namespace StudyFramework1
             foreach (XElement grade in subTopicDoc.Descendants("grade")) grade.Value = "-1";
             if (!string.IsNullOrEmpty(currentSubTopicXMLPath)) subTopicDoc.Save(currentSubTopicXMLPath);
         }
-        public void UpdateQuestionText(string xmlPath, string questionText, string answerText) 
+        public void UpdateQuestionText(string xmlPath, string originalQuestionText, string newQuestionText) 
         {
             SetSubTopicByPath(xmlPath);
             if (subTopicDoc == null) return;
 
             foreach (XElement qag in subTopicDoc.Descendants("qaPair"))
-                foreach (XElement answer in qag.Descendants("answer"))
-                    if (answer.Value == answerText)
-                        foreach (XElement question in qag.Descendants("question")) question.Value = questionText;
+                foreach (XElement question in qag.Descendants("question"))
+                    if (question.Value == originalQuestionText) question.Value = newQuestionText;
             if (!string.IsNullOrEmpty(currentSubTopicXMLPath)) subTopicDoc.Save(currentSubTopicXMLPath);
         }
         public void UpdateAnswerText(string xmlPath, string questionText, string answerText) 

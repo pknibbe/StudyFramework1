@@ -139,15 +139,21 @@ namespace StudyFramework1
             if (dataProvider == null) { return; }
             dataProvider.ClearAllMarks(subjectName, topicName, subTopicName);
         }
-        public  void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
+        public  void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText)
         {
             if (dataProvider == null) { return; }
-            dataProvider.UpdateQuestionText(subjectName, topicName, subTopicName, questionText, answerText);
+            dataProvider.UpdateQuestionText(subjectName, topicName, subTopicName, originalQuestionText, newQuestionText);
         }
         public  void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
         {
             if (dataProvider == null) { return; }
             dataProvider.UpdateAnswerText(subjectName, topicName, subTopicName, questionText, answerText);
+        }
+
+        public void IncrementQuestionIndex()
+        {
+            if (dataProvider == null) { return; }
+            dataProvider.IncrementQuestionIndex();
         }
 
     }

@@ -98,15 +98,20 @@ namespace StudyFramework1
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
             functions.ClearAllMarks(xmlPath);
         }
-        public override void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
+        public override void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText)
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
-            functions.UpdateQuestionText(xmlPath, questionText, answerText);
+            functions.UpdateQuestionText(xmlPath, originalQuestionText, newQuestionText);
         }
         public override void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
             functions.UpdateAnswerText(xmlPath, questionText, answerText);
+        }
+
+        public override void IncrementQuestionIndex()
+        {
+            functions.IncrementQuestionIndex();
         }
 
     }

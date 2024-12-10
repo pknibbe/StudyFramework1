@@ -98,7 +98,12 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
-        public override void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
+        public override void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void IncrementQuestionIndex()
         {
             throw new NotImplementedException();
         }

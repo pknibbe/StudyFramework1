@@ -34,7 +34,8 @@ namespace StudyFramework1
         public abstract void MarkAnswerIncorrect(string subjectName, string topicName, string subTopicName, string questionText);
         public abstract void ResetQuestionIndex();
         public abstract void ClearAllMarks(string subjectName, string topicName, string subTopicName);
-        public abstract void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string questionText, string answerText);
+        public abstract void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText);
         public abstract void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText);
+        public abstract void IncrementQuestionIndex();
     }
 }
