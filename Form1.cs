@@ -2,8 +2,7 @@ namespace StudyFramework1
 {
     public partial class Form1 : Form
     {
-        readonly StudyContent studyContent = new();
-        //readonly XMLFunctions xMLFunctions = new();
+        readonly StudyData studyContent = new(StudyData.DataSource.FileSystem);
         bool skipPassed = false;
         string? newQuestion;
 
