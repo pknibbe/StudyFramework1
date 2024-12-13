@@ -13,6 +13,7 @@ namespace StudyFramework1
         public abstract List<string> GetStudySubjects();
         public abstract List<string> GetSubjectTopics(string subjectName);
         public abstract List<string> GetSubTopics(string subjectName, string topicName);
+        public abstract List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName);
         public abstract string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed);
         public abstract string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText);
 

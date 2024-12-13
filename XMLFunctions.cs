@@ -51,6 +51,16 @@ namespace StudyFramework1
                 bool? currentGrade = null;*/
 
         // Getters //
+        public List<string> GetSubTopicQuestions(string xmlPath)
+        {
+            List<string> retVal = [];
+            SetSubTopicByPath(xmlPath);
+            if (subTopicDoc != null)
+            {
+                foreach (XElement question in subTopicDoc.Descendants("question")) retVal.Add(question.Value);
+            }
+            return retVal;
+        }
 
 
         /// <summary>
@@ -109,7 +119,7 @@ namespace StudyFramework1
         // Adders //
         public void AddSubTopic(string subTopicName, string subTopicDirectoryPath)
         {
-            subTopicDoc = new XDocument(new XElement("subTopicName", subTopicName));
+            subTopicDoc = new XDocument(new XElement("subtopic", new XElement("subTopicName", subTopicName)));
             currentSubTopicXMLPath = subTopicDirectoryPath;
             subTopicDoc.Save(currentSubTopicXMLPath);
             questionIndex = 0;

@@ -58,6 +58,10 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
+        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+            { throw new NotImplementedException(); }
+
+
         public override void MarkAnswerCorrect(string subjectName, string topicName, string subTopicName, string questionText)
         {
             throw new NotImplementedException();

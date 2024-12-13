@@ -53,6 +53,12 @@ namespace StudyFramework1
             return dataProvider.GetSubTopics(subjectName, topicName);  
         }
 
+        public List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+        {
+            if (dataProvider == null) { return []; }
+            return dataProvider.GetSubTopicQuestions(subjectName, topicName, subTopicName);
+        }
+
         public  string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed)
         {
             if (dataProvider == null) { return string.Empty; }

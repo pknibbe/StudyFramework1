@@ -26,6 +26,12 @@ namespace StudyFramework1
             return dataSource.GetSubTopics(subjectName, topicName);
         }
 
+        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            return functions.GetSubTopicQuestions(xmlPath);
+        }
+
         public override string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed)
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);

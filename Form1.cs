@@ -5,6 +5,8 @@ namespace StudyFramework1
         readonly StudyData studyContent = new(StudyData.DataSource.FileSystem);
         bool skipPassed = false;
         string? newQuestion;
+        bool editingQuestion = false;
+        bool editingAnswer = false;
 
         public Form1()
         {
@@ -17,17 +19,24 @@ namespace StudyFramework1
             }
             if (comboBoxSubject.Items.Count > 0)
                 comboBoxSubject.SelectedIndex = 0;
-            
+
             labelResult.Text = string.Empty;
+            textBoxAnswer.Visible = false;
         }
 
         private void ComboBoxSubject_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (comboBoxSubject.FindStringExact(comboBoxSubject.Text) == -1) comboBoxSubject.Items.Add((string)comboBoxSubject.Text);
+            comboBoxQuestion.Items.Clear();
+            comboBoxQuestion.Text = string.Empty;
             labelResult.Text = string.Empty;
             comboBoxTopic.Items.Clear();
             comboBoxTopic.Text = string.Empty;
             comboBoxSubTopic.Items.Clear();
             comboBoxSubTopic.Text = string.Empty;
+            textBoxAnswer.Visible = false;
+            buttonAddQuestion.Text = "Add Question";
+            editingQuestion = false;
             foreach (string topic in studyContent.GetSubjectTopics(comboBoxSubject.Text))
             {
                 if ((string.IsNullOrEmpty(topic)) || (string.IsNullOrEmpty(topic.Trim())) || (comboBoxTopic.Items.Contains(topic))) continue;
@@ -37,11 +46,17 @@ namespace StudyFramework1
                 comboBoxTopic.SelectedIndex = 0;
         }
 
-        private void ComboBoxTopic_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxTopic_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
+
+            comboBoxQuestion.Items.Clear();
+            comboBoxQuestion.Text = string.Empty;
             comboBoxSubTopic.Items.Clear();
             comboBoxSubTopic.Text = string.Empty;
+            textBoxAnswer.Visible = false;
+            buttonAddQuestion.Text = "Add Question";
+            editingQuestion = false;
             foreach (string subtopic in studyContent.GetSubTopics(comboBoxSubject.Text, comboBoxTopic.Text))
             {
                 if ((string.IsNullOrEmpty(subtopic)) || (string.IsNullOrEmpty(subtopic.Trim())) || (comboBoxSubTopic.Items.Contains(subtopic))) continue;
@@ -51,22 +66,37 @@ namespace StudyFramework1
                 comboBoxSubTopic.SelectedIndex = 0;
         }
 
-        private void ComboBoxSubTopic_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxSubTopic_SelectedIndexChanged_1(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            labelQuestion.Text = string.Empty;
             textBoxAnswer.Text = string.Empty;
-            textBoxQuestion.Text = string.Empty;
-            labelQuestion.Text = studyContent.GetCurrentQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text , skipPassed);
+            textBoxAnswer.Visible = false;
+            buttonAddQuestion.Text = "Add Question";
+            editingQuestion = false;
+            comboBoxQuestion.Items.Clear();
+            comboBoxQuestion.Text = string.Empty;
+            foreach (string question in studyContent.GetSubTopicQuestions(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text))
+            {
+                if ((string.IsNullOrEmpty(question)) || (string.IsNullOrEmpty(question.Trim())) || (comboBoxQuestion.Items.Contains(question))) continue;
+                comboBoxQuestion.Items.Add(question);
+            }
+            if (comboBoxQuestion.Items.Count > 0)
+                comboBoxQuestion.SelectedIndex = 0;
+
+        }
+
+        private void ComboBoxQuestion_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
 
         private void ButtonAddSubject_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (String.IsNullOrEmpty(textBoxSubject.Text)) return;
-            _ = comboBoxSubject.Items.Add(textBoxSubject.Text);
-            studyContent.AddSubject(textBoxSubject.Text);
-            textBoxSubject.Text = string.Empty;
+            if (String.IsNullOrEmpty(comboBoxSubject.Text)) return;
+            if (comboBoxSubject.FindStringExact(comboBoxSubject.Text) != -1) return;
+            _ = comboBoxSubject.Items.Add(comboBoxSubject.Text);
+            studyContent.AddSubject(comboBoxSubject.Text);
+            comboBoxSubject.Text = string.Empty;
 
             if (comboBoxSubject.Items.Count > 0)
             {
@@ -79,10 +109,11 @@ namespace StudyFramework1
         private void ButtonAddTopic_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (String.IsNullOrEmpty(textBoxTopic.Text)) return;
-            _ = comboBoxTopic.Items.Add(textBoxTopic.Text);
-            studyContent.AddTopic(textBoxSubject.Text, textBoxTopic.Text);
-            textBoxTopic.Text = string.Empty;
+            if (String.IsNullOrEmpty(comboBoxTopic.Text)) return;
+            if (comboBoxTopic.FindStringExact(comboBoxTopic.Text) != -1) return;
+            _ = comboBoxTopic.Items.Add(comboBoxTopic.Text);
+            studyContent.AddTopic(comboBoxSubject.Text, comboBoxTopic.Text);
+            comboBoxTopic.Text = string.Empty;
 
             if (comboBoxTopic.Items.Count > 0)
             {
@@ -95,10 +126,10 @@ namespace StudyFramework1
         private void ButtonAddSubTopic_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (String.IsNullOrEmpty(textBoxSubTopic.Text)) return;
-            _ = comboBoxSubTopic.Items.Add(textBoxSubTopic.Text);
-            studyContent.AddSubTopic(comboBoxSubject.Text, comboBoxTopic.Text, textBoxSubTopic.Text);
-            textBoxSubTopic.Text = string.Empty;
+            if (String.IsNullOrEmpty(comboBoxSubTopic.Text)) return;
+            if (comboBoxSubTopic.FindStringExact(comboBoxSubTopic.Text) != -1) return;
+            _ = comboBoxSubTopic.Items.Add(comboBoxSubTopic.Text);
+            studyContent.AddSubTopic(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text);
 
             if (comboBoxSubTopic.Items.Count > 0)
             {
@@ -106,44 +137,53 @@ namespace StudyFramework1
                 return;
             }
             labelResult.Text = "Subtopic Added";
-            labelQuestion.Text = string.Empty;
         }
 
 
         private void ButtonAddQuestion_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (String.IsNullOrEmpty(textBoxQuestion.Text)) return;
-            labelResult.Text = string.Empty;
-            labelQuestion.Text = string.Empty;
-            textBoxAnswer.Text = string.Empty;
             if (buttonAddQuestion.Text == "Add Question")
             {
-                newQuestion = textBoxQuestion.Text;
+                editingQuestion = true;
+                if (String.IsNullOrEmpty(comboBoxQuestion.Text)) return;
+                newQuestion = comboBoxQuestion.Text;
                 buttonAddQuestion.Text = "Add Answer";
                 labelResult.Text = "Question Added";
-                textBoxQuestion.Text = string.Empty;
+                textBoxAnswer.Text = string.Empty;
                 buttonEditAnswer.Visible = false;
                 buttonEditQuestion.Visible = false;
+                comboBoxQuestion.Visible = false;
+                textBoxAnswer.Visible = true;
+                labelChooseQuestion.Text = "Enter the answer to the question";
             }
             else
             {
-                if (!string.IsNullOrEmpty(newQuestion)) 
-                    studyContent.AddQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, newQuestion, textBoxQuestion.Text);
+                if (String.IsNullOrEmpty(textBoxAnswer.Text))
+                {
+                    labelResult.Text = "Question answer cannot be left blank.";
+                    return;
+                }
+
+                if (!string.IsNullOrEmpty(newQuestion))
+                    studyContent.AddQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, newQuestion, textBoxAnswer.Text);
 
                 labelResult.Text = "Answer Added";
                 buttonAddQuestion.Text = "Add Question";
-                textBoxQuestion.Text = string.Empty;
-                labelQuestion.Text = studyContent.GetCurrentQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, skipPassed);
+                textBoxAnswer.Visible = false;
+                textBoxAnswer.Text = string.Empty;
                 buttonEditAnswer.Visible = true;
                 buttonEditQuestion.Visible = true;
+                comboBoxQuestion.Visible = true;
+                labelChooseQuestion.Text = "Choose Question";
+                editingQuestion = false;
             }
         }
 
         private void ButtonDeleteSubject_click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (comboBoxSubject.Items.Count > 0)
+            if (comboBoxSubject.FindStringExact(comboBoxSubject.Text) > 0)
             {
                 studyContent.RemoveSubject(comboBoxSubject.Text);
                 comboBoxSubject.Items.Remove(comboBoxSubject.SelectedItem);
@@ -158,7 +198,7 @@ namespace StudyFramework1
         private void ButtonDeleteTopic_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
-            if (comboBoxTopic.Items.Count > 0)
+            if (comboBoxTopic.FindStringExact(comboBoxTopic.Text) > 0)
             {
                 studyContent.RemoveTopic(comboBoxSubject.Text, comboBoxTopic.Text);
                 comboBoxTopic.Items.Remove(comboBoxTopic.SelectedItem);
@@ -183,7 +223,7 @@ namespace StudyFramework1
 
         private void ButtonQuestionRemove_Click(object sender, EventArgs e)
         {
-            studyContent.RemoveQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
+            studyContent.RemoveQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
         }
 
         /// <summary>
@@ -193,7 +233,7 @@ namespace StudyFramework1
         /// <param name="e"></param>
         private void ButtonShowAnswer_Click(object sender, EventArgs e)
         {
-            textBoxAnswer.Text = studyContent.GetCurrentAnswer(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
+            textBoxAnswer.Text = studyContent.GetCurrentAnswer(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
             textBoxAnswer.Visible = true;
             buttonShowAnswer.Visible = false;
             buttonEditQuestion.Visible = true;
@@ -201,7 +241,7 @@ namespace StudyFramework1
 
         private void ButtonMarkCorrect_Click(object sender, EventArgs e)
         {
-            studyContent.MarkAnswerCorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
+            studyContent.MarkAnswerCorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
             labelResult.Text = "Answer Marked Correct";
             studyContent.IncrementQuestionIndex();
             ShowCurrentQuestion();
@@ -211,7 +251,7 @@ namespace StudyFramework1
 
         private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
         {
-            studyContent.MarkAnswerIncorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text);
+            studyContent.MarkAnswerIncorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
 
             labelResult.Text = "Answer Marked Incorrect";
             studyContent.IncrementQuestionIndex();
@@ -228,9 +268,7 @@ namespace StudyFramework1
         private void ShowCurrentQuestion()
         {
             labelResult.Text = string.Empty;
-            labelQuestion.Text = string.Empty;
             textBoxAnswer.Text = string.Empty;
-            labelQuestion.Text = studyContent.GetCurrentQuestion(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, skipPassed);
             textBoxAnswer.Visible = false;
             buttonShowAnswer.Visible = true;
         }
@@ -260,15 +298,16 @@ namespace StudyFramework1
             labelResult.Text = string.Empty;
             if (buttonEditQuestion.Text.Contains("dit"))
             {
-                textBoxQuestion.Text = labelQuestion.Text;
+                editingQuestion = true;
                 buttonEditQuestion.Text = "Save Question";
             }
-            else {
-                studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxQuestion.Text);
+            else
+            {
+                studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text, textBoxAnswer.Text);
                 buttonEditQuestion.Text = "Edit Question";
                 labelResult.Text = "Question text updated";
-                labelQuestion.Text = textBoxQuestion.Text;
-                textBoxQuestion.Text = string.Empty;
+                textBoxAnswer.Text = string.Empty;
+                editingQuestion = false;
             }
         }
 
@@ -276,12 +315,12 @@ namespace StudyFramework1
         {
             if (buttonEditAnswer.Text.Contains("dit"))
             {
-                textBoxQuestion.Text = String.Empty;
+                textBoxAnswer.Text = String.Empty;
                 buttonEditAnswer.Text = "Save Answer";
             }
             else
             {
-                studyContent.UpdateAnswerText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, labelQuestion.Text, textBoxAnswer.Text);
+                studyContent.UpdateAnswerText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text, textBoxAnswer.Text);
             }
 
         }
