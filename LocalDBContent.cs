@@ -38,10 +38,11 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
-        public override string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed)
+        public override bool? GetCurrentGrade(string subjectName, string topicName, string subTopicName, string questionText)
         {
             throw new NotImplementedException();
         }
+
 
         public override List<string> GetStudySubjects()
         {
@@ -58,7 +59,7 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
-        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName, bool skipPassed)
             { throw new NotImplementedException(); }
 
 
@@ -92,22 +93,12 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
-        public override void ResetQuestionIndex()
-        {
-            throw new NotImplementedException();
-        }
-
         public override void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText)
         {
             throw new NotImplementedException();
         }
 
         public override void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void IncrementQuestionIndex()
         {
             throw new NotImplementedException();
         }

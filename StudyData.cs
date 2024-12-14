@@ -53,16 +53,10 @@ namespace StudyFramework1
             return dataProvider.GetSubTopics(subjectName, topicName);  
         }
 
-        public List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+        public List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName, bool skipPassed)
         {
             if (dataProvider == null) { return []; }
-            return dataProvider.GetSubTopicQuestions(subjectName, topicName, subTopicName);
-        }
-
-        public  string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed)
-        {
-            if (dataProvider == null) { return string.Empty; }
-            return dataProvider.GetCurrentQuestion(subjectName, topicName, subTopicName, skipPassed);
+            return dataProvider.GetSubTopicQuestions(subjectName, topicName, subTopicName, skipPassed);
         }
         public  string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText)
         {
@@ -135,11 +129,6 @@ namespace StudyFramework1
             if (dataProvider == null) { return; }
             dataProvider.MarkAnswerIncorrect(subjectName, topicName, subTopicName, questionText);
         }
-        public  void ResetQuestionIndex()
-        {
-            if (dataProvider == null) { return; }
-            dataProvider.ResetQuestionIndex();
-        }
         public  void ClearAllMarks(string subjectName, string topicName, string subTopicName)
         {
             if (dataProvider == null) { return; }
@@ -154,12 +143,6 @@ namespace StudyFramework1
         {
             if (dataProvider == null) { return; }
             dataProvider.UpdateAnswerText(subjectName, topicName, subTopicName, questionText, answerText);
-        }
-
-        public void IncrementQuestionIndex()
-        {
-            if (dataProvider == null) { return; }
-            dataProvider.IncrementQuestionIndex();
         }
 
     }

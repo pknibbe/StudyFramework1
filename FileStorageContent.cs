@@ -26,20 +26,19 @@ namespace StudyFramework1
             return dataSource.GetSubTopics(subjectName, topicName);
         }
 
-        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName)
+        public override List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName, bool skipPassed)
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
-            return functions.GetSubTopicQuestions(xmlPath);
-        }
-
-        public override string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed)
-        {
-            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
-            return functions.GetCurrentQuestion(xmlPath, skipPassed);
+            return functions.GetSubTopicQuestions(xmlPath, skipPassed);
         }
         public override string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText)
         {
-            return functions.GetCurrentAnswer(dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName), questionText); 
+            return functions.GetCurrentAnswer(dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName), questionText);
+        }
+
+        public override bool? GetCurrentGrade(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            return functions.GetCurrentGrade(dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName), questionText);
         }
 
         // Creators //
@@ -95,10 +94,6 @@ namespace StudyFramework1
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
             functions.MarkAnswerIncorrect(xmlPath, questionText);
         }
-        public override void ResetQuestionIndex()
-        {
-            functions.ResetQuestionIndex();
-        }
         public override void ClearAllMarks(string subjectName, string topicName, string subTopicName)
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
@@ -113,11 +108,6 @@ namespace StudyFramework1
         {
             string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
             functions.UpdateAnswerText(xmlPath, questionText, answerText);
-        }
-
-        public override void IncrementQuestionIndex()
-        {
-            functions.IncrementQuestionIndex();
         }
 
     }

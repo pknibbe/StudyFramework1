@@ -8,14 +8,18 @@ namespace StudyFramework1
 {
     internal abstract class DataProvider
     {
-
+        // The data may contain many Study Subjects, each with a unique name
+        // Each study subject may contain many topics, each with a unique name
+        // Each subject topic may contain many subtopics, each with a unique name
+        // Each subtopic may contain many questions, each with a unique name, an answer, and a grade
+        // Each question is associated with an answer and a grade
         // Getters //
         public abstract List<string> GetStudySubjects();
         public abstract List<string> GetSubjectTopics(string subjectName);
         public abstract List<string> GetSubTopics(string subjectName, string topicName);
-        public abstract List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName);
-        public abstract string GetCurrentQuestion(string subjectName, string topicName, string subTopicName, bool skipPassed);
+        public abstract List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName, bool skipPassed);
         public abstract string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText);
+        public abstract bool? GetCurrentGrade(string subjectName, string topicName, string subTopicName, string questionText);
 
         // Creators //
         public abstract void AddSubject(string subjectName);
@@ -33,10 +37,8 @@ namespace StudyFramework1
         // Updaters //
         public abstract void MarkAnswerCorrect(string subjectName, string topicName, string subTopicName, string questionText);
         public abstract void MarkAnswerIncorrect(string subjectName, string topicName, string subTopicName, string questionText);
-        public abstract void ResetQuestionIndex();
         public abstract void ClearAllMarks(string subjectName, string topicName, string subTopicName);
         public abstract void UpdateQuestionText(string subjectName, string topicName, string subTopicName, string originalQuestionText, string newQuestionText);
         public abstract void UpdateAnswerText(string subjectName, string topicName, string subTopicName, string questionText, string answerText);
-        public abstract void IncrementQuestionIndex();
     }
 }
