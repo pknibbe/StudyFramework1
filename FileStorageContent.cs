@@ -41,6 +41,12 @@ namespace StudyFramework1
             return functions.GetCurrentGrade(dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName), questionText);
         }
 
+        public override bool QuestionExists(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            string xmlPath = dataSource.GetSubTopicFilePath(subjectName, topicName, subTopicName);
+            return functions.QuestionExists(xmlPath, questionText);
+        }
+
         // Creators //
         public override void AddSubject(string subjectName)
         { dataSource.AddSubject(subjectName); }

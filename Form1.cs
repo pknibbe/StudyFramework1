@@ -83,7 +83,7 @@ namespace StudyFramework1
                 comboBoxQuestion.SelectedIndex = 0;
         }
 
-        private bool SkipPassed() { return buttonShowWrong.Text == "Show Wrong"; }
+        private bool SkipPassed() { return buttonShowWrong.Text == "Show All"; }
 
         private void ComboBoxQuestion_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -146,6 +146,7 @@ namespace StudyFramework1
             if (buttonAddQuestion.Text == "Add Question")
             {
                 if (String.IsNullOrEmpty(comboBoxQuestion.Text)) return;
+                if (studyContent.QuestionExists(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text)) return;
                 newQuestion = comboBoxQuestion.Text;
                 buttonAddQuestion.Text = "Add Answer";
                 labelResult.Text = "Question Added";
@@ -245,7 +246,7 @@ namespace StudyFramework1
             if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
             ShowCurrentQuestion();
             buttonEditQuestion.Visible = false;
-
+            IncrementQuestion();
         }
 
         private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
@@ -256,6 +257,7 @@ namespace StudyFramework1
             if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
             ShowCurrentQuestion();
             buttonEditQuestion.Visible = false;
+            IncrementQuestion();
         }
 
         private void ShowCurrentQuestion()
@@ -313,6 +315,11 @@ namespace StudyFramework1
                 studyContent.UpdateAnswerText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text, textBoxAnswer.Text);
             }
 
+        }
+
+        private void IncrementQuestion()
+        {
+            if (comboBoxQuestion.SelectedIndex < comboBoxQuestion.Items.Count - 2) comboBoxQuestion.SelectedIndex++;
         }
     }
 }

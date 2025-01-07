@@ -43,6 +43,11 @@ namespace StudyFramework1
             throw new NotImplementedException();
         }
 
+        public override bool QuestionExists(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            throw new NotImplementedException();
+        }
+
         public override List<string> GetStudySubjects()
         {
             throw new NotImplementedException();

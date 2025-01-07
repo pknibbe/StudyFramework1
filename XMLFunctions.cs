@@ -46,11 +46,11 @@ namespace StudyFramework1
             {
                 foreach (XElement qag in subTopicDoc.Descendants(questionAnswerGroupElementTag))
                 {
-                    foreach (XElement grade in qag.Descendants(gradeElementTag))
+                    if ((!skipPassed) || (!QuestionIsPassed(qag))) // omit elements if passed and flag set to omit passed questions
                     {
-                        if ((!skipPassed) || (grade.Value != passedValue))
+                        foreach (XElement question in qag.Descendants(questionElementTag))
                         {
-                            foreach (XElement question in qag.Descendants(questionElementTag)) retVal.Add(question.Value);
+                            retVal.Add(question.Value);
                         }
                     }
                 }
@@ -89,11 +89,7 @@ namespace StudyFramework1
             foreach (XElement qap in questionAnswerGroups)
                 foreach (XElement question in qap.Descendants(questionElementTag))
                     if (question.Value == questionText)
-                        foreach (XElement grade in qap.Descendants(answerElementTag))
-                        {
-                            if (grade.Value == passedValue) return true;
-                            if (grade.Value == failedValue) return false;
-                        }                            
+                        return GetQuestionGrade(qap);
 
             return retVal;
         }
@@ -192,10 +188,33 @@ namespace StudyFramework1
             if (!string.IsNullOrEmpty(xmlPath)) subTopicDoc.Save(xmlPath);
         }
 
+        public bool QuestionExists(string xmlPath, string questionText)
+        {
+            bool retVal = true;
+            SetSubTopicByPath(xmlPath);
+            if (subTopicDoc == null) return retVal;
+
+            foreach (XElement qag in subTopicDoc.Descendants(questionAnswerGroupElementTag))
+                foreach (XElement question in qag.Descendants(questionElementTag))
+                    if (question.Value == questionText) return retVal;
+
+            return false;
+        }
+
         private static bool QuestionIsPassed(XElement qap)
         {
             foreach (XElement grade in qap.Descendants(gradeElementTag)) return (grade.Value == passedValue);
             return false;
+        }
+
+        private static bool? GetQuestionGrade(XElement qap)
+        {
+            foreach (XElement grade in qap.Descendants(gradeElementTag))
+            {
+                if (grade.Value == passedValue) return true;
+                if (grade.Value == failedValue) return false;
+            }
+            return null;
         }
 
         private void SetSubTopicByPath(string xmlPath)

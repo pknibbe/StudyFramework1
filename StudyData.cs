@@ -64,6 +64,12 @@ namespace StudyFramework1
             return dataProvider.GetCurrentAnswer(subjectName, topicName, subTopicName, questionText);
         }
 
+        public bool QuestionExists(string subjectName, string topicName, string subTopicName, string questionText)
+        {
+            if (dataProvider == null) { return true; }
+            return dataProvider.QuestionExists(subjectName, topicName, subTopicName, questionText);
+        }
+
         // Creators //
         public  void AddSubject(string subjectName)
         {

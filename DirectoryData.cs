@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
@@ -51,7 +52,7 @@ namespace StudyFramework1
             return Path.Combine(rootPath, subjectName, topicName, subTopicName + fileExtension);
         }
 
-        private List<string> GetFoldersInDirectory(string directoryPath)
+        private static List<string> GetFoldersInDirectory(string directoryPath)
         {
             List<string> result = [];
             if (!Directory.Exists(directoryPath)) return result;

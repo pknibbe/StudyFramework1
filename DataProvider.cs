@@ -20,6 +20,7 @@ namespace StudyFramework1
         public abstract List<string> GetSubTopicQuestions(string subjectName, string topicName, string subTopicName, bool skipPassed);
         public abstract string GetCurrentAnswer(string subjectName, string topicName, string subTopicName, string questionText);
         public abstract bool? GetCurrentGrade(string subjectName, string topicName, string subTopicName, string questionText);
+        public abstract bool QuestionExists(string subjectName, string topicName, string subTopicName, string questionText);
 
         // Creators //
         public abstract void AddSubject(string subjectName);
