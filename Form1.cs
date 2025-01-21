@@ -21,6 +21,7 @@ namespace StudyFramework1
             textBoxAnswer.Visible = false;
         }
 
+        // ComboBox selection event handlers
         private void ComboBoxSubject_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxSubject.FindStringExact(comboBoxSubject.Text) == -1) comboBoxSubject.Items.Add((string)comboBoxSubject.Text);
@@ -70,26 +71,12 @@ namespace StudyFramework1
             ResetQuestionComboBox();
         }
 
-        private void ResetQuestionComboBox()
-        { 
-            comboBoxQuestion.Items.Clear();
-            comboBoxQuestion.Text = string.Empty;
-            foreach (string question in studyContent.GetSubTopicQuestions(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, SkipPassed()))
-            {
-                if ((string.IsNullOrEmpty(question)) || (string.IsNullOrEmpty(question.Trim())) || (comboBoxQuestion.Items.Contains(question))) continue;
-                comboBoxQuestion.Items.Add(question);
-            }
-            if (comboBoxQuestion.Items.Count > 0)
-                comboBoxQuestion.SelectedIndex = 0;
-        }
-
-        private bool SkipPassed() { return buttonShowWrong.Text == "Show All"; }
-
         private void ComboBoxQuestion_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Currently nothing happens when this event is triggered
         }
 
+        // Button Click event handlers
         private void ButtonAddSubject_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
@@ -176,11 +163,13 @@ namespace StudyFramework1
                 buttonEditQuestion.Visible = true;
                 comboBoxQuestion.Visible = true;
                 labelChooseQuestion.Text = "Choose Question";
+                ResetQuestionComboBox();
+
                 ShowCurrentQuestion();
             }
         }
 
-        private void ButtonDeleteSubject_click(object sender, EventArgs e)
+        private void ButtonDeleteSubject_Click(object sender, EventArgs e)
         {
             labelResult.Text = string.Empty;
             if (comboBoxSubject.FindStringExact(comboBoxSubject.Text) > 0)
@@ -224,6 +213,7 @@ namespace StudyFramework1
         private void ButtonQuestionRemove_Click(object sender, EventArgs e)
         {
             studyContent.RemoveQAG(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
+            ResetQuestionComboBox();
         }
 
         /// <summary>
@@ -258,14 +248,6 @@ namespace StudyFramework1
             ShowCurrentQuestion();
             buttonEditQuestion.Visible = false;
             IncrementQuestion();
-        }
-
-        private void ShowCurrentQuestion()
-        {
-            labelResult.Text = string.Empty;
-            textBoxAnswer.Text = string.Empty;
-            textBoxAnswer.Visible = false;
-            buttonShowAnswer.Visible = true;
         }
 
         private void ButtonShowWrong_Click(object sender, EventArgs e)
@@ -317,9 +299,37 @@ namespace StudyFramework1
 
         }
 
+        // utility functions
         private void IncrementQuestion()
         {
             if (comboBoxQuestion.SelectedIndex < comboBoxQuestion.Items.Count - 2) comboBoxQuestion.SelectedIndex++;
+            buttonShowAnswer.Visible = true;
+        }
+
+        private void ResetQuestionComboBox()
+        {
+            comboBoxQuestion.Items.Clear();
+            comboBoxQuestion.Text = string.Empty;
+            foreach (string question in studyContent.GetSubTopicQuestions(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, SkipPassed()))
+            {
+                if ((string.IsNullOrEmpty(question)) || (string.IsNullOrEmpty(question.Trim())) || (comboBoxQuestion.Items.Contains(question))) continue;
+                comboBoxQuestion.Items.Add(question);
+            }
+            if (comboBoxQuestion.Items.Count > 0)
+                comboBoxQuestion.SelectedIndex = 0;
+
+            buttonShowAnswer.Visible = true;
+
+        }
+
+        private bool SkipPassed() { return buttonShowWrong.Text == "Show All"; }
+
+        private void ShowCurrentQuestion()
+        {
+            labelResult.Text = string.Empty;
+            textBoxAnswer.Text = string.Empty;
+            textBoxAnswer.Visible = false;
+            buttonShowAnswer.Visible = true;
         }
     }
 }

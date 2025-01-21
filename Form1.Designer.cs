@@ -250,7 +250,7 @@
             buttonDeleteSubject.TabIndex = 4;
             buttonDeleteSubject.Text = "Delete Subject";
             buttonDeleteSubject.UseVisualStyleBackColor = true;
-            buttonDeleteSubject.Click += ButtonDeleteSubject_click;
+            buttonDeleteSubject.Click += ButtonDeleteSubject_Click;
             // 
             // panel2
             // 
