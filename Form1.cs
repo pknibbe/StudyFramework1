@@ -289,12 +289,13 @@ namespace StudyFramework1
         {
             if (buttonEditAnswer.Text.Contains("dit"))
             {
-                textBoxAnswer.Text = String.Empty;
                 buttonEditAnswer.Text = "Save Answer";
             }
             else
             {
                 studyContent.UpdateAnswerText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text, textBoxAnswer.Text);
+                buttonEditAnswer.Text = "Edit Answer";
+                labelResult.Text = "Answer Saved";
             }
 
         }
