@@ -328,7 +328,7 @@ namespace StudyFramework1
 
         }
 
-        private bool SkipPassed() { return buttonShowWrong.Text == "Show All"; }
+        private bool SkipPassed() { return buttonShowWrong.Text == "Show Wrong"; }
 
         private void ShowCurrentQuestion()
         {
