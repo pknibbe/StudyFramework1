@@ -259,11 +259,11 @@ namespace StudyFramework1
         {
             if (SkipPassed())
             {
-                buttonShowWrong.Text = "Show All";
+                buttonShowWrong.Text = "Show Wrong";
             }
             else
             {
-                buttonShowWrong.Text = "Show Wrong";
+                buttonShowWrong.Text = "Show All";
             }
             ResetQuestionComboBox();
         }
@@ -328,7 +328,7 @@ namespace StudyFramework1
 
         }
 
-        private bool SkipPassed() { return buttonShowWrong.Text == "Show Wrong"; }
+        private bool SkipPassed() { return buttonShowWrong.Text == "Show All"; }
 
         private void ShowCurrentQuestion()
         {
