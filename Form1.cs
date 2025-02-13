@@ -238,7 +238,10 @@ namespace StudyFramework1
             labelResult.Text = "Answer Marked Correct";
             if (SkipPassed())
             {
+                int xyz = comboBoxQuestion.SelectedIndex;
                 comboBoxQuestion.Items.Remove(comboBoxQuestion.SelectedItem);
+                if (xyz < comboBoxQuestion.Items.Count) comboBoxQuestion.SelectedIndex = xyz;
+                labelChooseQuestion.Text = "Choose Question (" + comboBoxQuestion.Items.Count + ")";
             }
             else if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
             ShowCurrentQuestion();
@@ -325,6 +328,7 @@ namespace StudyFramework1
                 comboBoxQuestion.SelectedIndex = 0;
 
             buttonShowAnswer.Visible = true;
+            labelChooseQuestion.Text = "Choose Question (" + comboBoxQuestion.Items.Count + ")";
 
         }
 
