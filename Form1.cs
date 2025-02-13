@@ -73,7 +73,10 @@ namespace StudyFramework1
 
         private void ComboBoxQuestion_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Currently nothing happens when this event is triggered
+            labelResult.Text = string.Empty;
+            textBoxAnswer.Visible = false;
+            buttonShowAnswer.Visible = true;
+            buttonEditQuestion.Visible = true;
         }
 
         // Button Click event handlers
@@ -233,10 +236,13 @@ namespace StudyFramework1
         {
             studyContent.MarkAnswerCorrect(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text);
             labelResult.Text = "Answer Marked Correct";
-            if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
+            if (SkipPassed())
+            {
+                comboBoxQuestion.Items.Remove(comboBoxQuestion.SelectedItem);
+            }
+            else if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
             ShowCurrentQuestion();
-            buttonEditQuestion.Visible = false;
-            IncrementQuestion();
+            buttonEditQuestion.Visible = true;
         }
 
         private void ButtonMarkIncorrect_Click(object sender, EventArgs e)
@@ -246,8 +252,7 @@ namespace StudyFramework1
             labelResult.Text = "Answer Marked Incorrect";
             if (comboBoxQuestion.SelectedIndex < comboBoxSubject.Items.Count - 1) comboBoxQuestion.SelectedIndex++;
             ShowCurrentQuestion();
-            buttonEditQuestion.Visible = false;
-            IncrementQuestion();
+            buttonEditQuestion.Visible = true;
         }
 
         private void ButtonShowWrong_Click(object sender, EventArgs e)
@@ -281,7 +286,7 @@ namespace StudyFramework1
                 studyContent.UpdateQuestionText(comboBoxSubject.Text, comboBoxTopic.Text, comboBoxSubTopic.Text, comboBoxQuestion.Text, textBoxAnswer.Text);
                 buttonEditQuestion.Text = "Edit Question";
                 labelResult.Text = "Question text updated";
-                textBoxAnswer.Text = string.Empty;
+                textBoxAnswer.Visible = false;
             }
         }
 
